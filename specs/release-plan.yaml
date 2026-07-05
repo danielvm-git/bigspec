@@ -1,9 +1,13 @@
 release:
   version: 1.0.0
   codename: Foundation and Wiki Integration
-  status: planning
+  status: build-prove
   semantic_release: true
   bump_hint: minor
+  pipeline:
+    ci: .github/workflows/ci.yml
+    release: .github/workflows/release.yml
+    config: .releaserc
 epics:
 - id: e01
   title: Context Assimilation
@@ -21,3 +25,8 @@ epics:
   title: Dual-Mode Distribution
   wsjf: 4.0
   capsule_dir: epics/e04-dual-distribution
+- id: e05
+  title: Release Mechanics and Handoffs
+  wsjf: 7.0
+  capsule_dir: epics/e05-release-handoffs
+  status: complete

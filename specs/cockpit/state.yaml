@@ -1,25 +1,24 @@
 ---
 okf_kind: cockpit-state
 okf_version: "1.0"
-generated_by: "human"
-generated_at: 2026-07-04T22:42:29Z
+generated_by: "skill:orchestrate-project"
+generated_at: 2026-07-05T19:51:00Z
 ---
 active_epic: "specs/epics/e03-kernel/"
-active_story: "specs/epics/e03-kernel/e03s01-bp-yaml.md"
-current_movement: "PLAN"
+active_story: ""
+current_movement: "SUSTAIN"
 handoff:
-  next_skill: "kickoff-branch"
-  reason: "Plan audit re-sequenced the roadmap kernel-first (release-plan.yaml). e03s01 (bp-yaml, the Known-3 anchor) is fully specified with a FAILING tasks ledger — ready for BUILD."
-  last_step_completed: "PLAN-AUDIT_LATEST.md written; release plan re-sequenced; e03/e04/e05 epics added; e03s01 elaborated + tasks ledger created"
+  next_skill: "review"
+  reason: "Epic 5 complete: all 33 skills have handoff.next_skill compliance; CI pipeline (ci.yml) with test/lint/build/validate-okf; release pipeline (release.yml) with semantic-release + Conventional Commits; .releaserc configured with npm + GitHub plugins. Ready for review gate."
+  last_step_completed: "e05 (Finalize v1.0 Release Mechanics and Handoffs): fixed 2 skills missing handoff.next_skill (using-bigspec, terse-mode); created .github/workflows/ci.yml (Quality Gates: lint→build→test→validate-okf on PRs/pushes to main, Node 20+22); created .github/workflows/release.yml (Semantic Release on main pushes); configured .releaserc with commit-analyzer, release-notes-generator, changelog, npm, github, git plugins; added semantic-release devDeps and release npm script; set publishConfig.access: public"
   open_decisions:
     - "e03s02/e03s03 and all e04/e05 stories await just-in-time SPECIFY on entry (elaborated: false in their manifests)"
     - "1.0.0 showcase epic (e06) to be FRAMED at M4 per architecture §8"
-    - "e02 split per ADR-0006: e02s00 (thin wiki bootstrap, no kernel dep) moved to M0/0.1.0 so the wiki's history starts at the first commit; e02s01-03 (full kernel-rendered tool, ADR-0001/0004/0005) unchanged at M3/0.4.0. e02s00 not yet elaborated or built — next concrete action once e03/e04 land."
+    - "e02 split per ADR-0006: e02s00 (thin wiki bootstrap, no kernel dep) moved to M0/0.1.0"
   context_pointers:
-    - "specs/PLAN-AUDIT_LATEST.md"
     - "constitution.md"
     - "specs/release-plan.yaml"
-    - "specs/epics/e03-kernel/e03s01-bp-yaml.md"
-    - "specs/epics/e03-kernel/e03s01-tasks.yaml"
-    - "specs/epics/e02-github-wiki/epic.yaml"
-    - "specs/adr/0006-wiki-bootstrap-from-first-commit.md"
+    - ".github/workflows/ci.yml"
+    - ".github/workflows/release.yml"
+    - ".releaserc"
+    - "skills/ (33 ported skills, all with handoff.next_skill)"
