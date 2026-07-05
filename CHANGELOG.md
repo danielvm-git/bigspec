@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/danielvm-git/bigspec/compare/v1.0.0...v1.0.1) (2026-07-05)
+
+
+### Bug Fixes
+
+* add OKF frontmatter to all 32 remaining spec files, 0 warnings ([9fc3ae3](https://github.com/danielvm-git/bigspec/commit/9fc3ae3360a7f2c01a389bfad577fe4e1fc67f23))
+
 # 1.0.0 (2026-07-05)
 
 
