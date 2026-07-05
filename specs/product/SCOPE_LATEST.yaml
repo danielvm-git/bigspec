@@ -1,3 +1,9 @@
+---
+okf_kind: scope
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 core_value: "Provide non-technical stakeholders with a zero-maintenance, human-readable Wiki surface and allow zero-friction distribution of the CLI via standalone binaries."
 summary: "This initiative bridges the gap between the machine-readable bigspec OKF sources (specs/) and human consumption/usage. It introduces two major capabilities: First, treating GitHub Wikis as a derived CI/CD rendering target for OKF bundles to provide living documentation. Second, introducing a dual-mode distribution pipeline (NPM + Standalone Binaries) managed by semantic-release to allow non-Node developers to adopt the methodology."
 in_scope:

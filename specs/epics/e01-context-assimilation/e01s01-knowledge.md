@@ -1,3 +1,9 @@
+---
+okf_kind: story
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 # e01s01 Knowledge Acquisition
 
 ## 17. Acceptance Criteria

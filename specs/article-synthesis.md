@@ -1,3 +1,9 @@
+---
+okf_kind: reference
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 # Article Synthesis — What the 8 bigpowers README Sources Mean for bigspec
 
 > Generated: 2026-07-05 · Task: t_8372c3a0

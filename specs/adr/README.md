@@ -1,3 +1,9 @@
+---
+okf_kind: readme
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 # Architecture Decision Records
 
 Each ADR records one decision with its context and consequences. Numbers are permanent identifiers: a retired decision's number is **never reused**, so gaps in the sequence are intentional.

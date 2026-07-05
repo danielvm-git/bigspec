@@ -1,3 +1,9 @@
+---
+okf_kind: reference
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 # CPSBok — Metrics & Calculation Methods Report
 
 **Generated:** 2026-07-04  

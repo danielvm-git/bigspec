@@ -1,3 +1,9 @@
+---
+okf_kind: reference
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 # Books Mentioned in bigpowers/bigspec — Core Concepts & Principle Mapping
 
 > Generated: 2026-07-05

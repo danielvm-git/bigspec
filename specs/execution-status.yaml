@@ -1,3 +1,9 @@
+---
+okf_kind: execution-status
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 # Execution order is dependency-layered by milestone (see release-plan.yaml).
 # M0: e03, e04, e02s00 (wiki bootstrap, ADR-0006) · M1: e05 · M3: e01, e02s01-03
 e02s00: todo

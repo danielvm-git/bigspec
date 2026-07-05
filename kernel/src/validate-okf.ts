@@ -33,6 +33,12 @@ const VALID_KINDS = new Set([
   "tasks",
   "cockpit-state",
   "adr",
+  "reference",
+  "release-plan",
+  "execution-status",
+  "scope",
+  "plan-audit",
+  "readme",
 ]);
 
 interface ValidationIssue {

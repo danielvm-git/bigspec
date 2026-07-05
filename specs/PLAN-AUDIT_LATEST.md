@@ -1,3 +1,9 @@
+---
+okf_kind: plan-audit
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-05T00:00:00Z"
+---
 # Plan Audit — bigspec
 **Date:** 2026-07-05 · **Verdict:** READY
 

@@ -1,3 +1,9 @@
+---
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
+---
 story_id: e04s01
 title: Standalone Binaries
 status: todo
