@@ -14,23 +14,23 @@ checkpoints:
   - id: chk-01
     intent: "get returns a nested scalar (handoff.next_skill)"
     verify_cmd: "npm test -- -t 'get returns a nested scalar'"
-    status: FAILING
+    status: PASSING
   - id: chk-02
     intent: "set writes a nested key while preserving siblings and the OKF frontmatter"
     verify_cmd: "npm test -- -t 'set preserves siblings and frontmatter'"
-    status: FAILING
+    status: PASSING
   - id: chk-03
     intent: "set creates intermediate maps for a new dotted path"
     verify_cmd: "npm test -- -t 'set creates intermediate maps'"
-    status: FAILING
+    status: PASSING
   - id: chk-04
     intent: "get on a missing key exits non-zero with path + file + remediation hint"
     verify_cmd: "npm test -- -t 'missing key errors with remediation'"
-    status: FAILING
+    status: PASSING
   - id: chk-05
     intent: "idempotent round-trip: re-setting an existing value is byte-stable except the target"
     verify_cmd: "npm test -- -t 'round-trip is byte-stable'"
-    status: FAILING
+    status: PASSING
 
 gates:
   - type: Risk
