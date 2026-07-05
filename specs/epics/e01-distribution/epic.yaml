@@ -1,0 +1,33 @@
+okf_kind: epic
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+---
+id: e01
+title: Dual-Mode Distribution Pipeline
+milestone: M3
+wsjf: 7.0
+total_bcps: 3
+calibration_id: bcp-plus-v1
+risk_tier: P1
+depends_on: [e03, e05]        # needs a kernel to compile + evals to prove before public artifacts
+status: todo
+goal: >
+  Ship bigspec to both Node users (npm/npx) and non-Node users (standalone
+  binaries), orchestrated by semantic-release. Compile toolchain pinned to Bun,
+  build-time only (ADR-0002). npm name 'bigspec' verified available.
+stories:
+  - id: e01s01
+    title: Standalone Binary Compilation
+    bcps: 2
+    risk_tier: P1
+    status: todo
+    elaborated: false          # SPECIFY on entry (M3) — no forward spec pointer yet
+    acceptance: "bun build --compile produces macOS/Linux/Windows binaries from one CI runner; kernel imports no Bun.* APIs (stays Node>=20 runnable); each binary runs `bigspec --version` with zero external deps."
+  - id: e01s02
+    title: Semantic-Release GitHub Plugin
+    bcps: 1
+    risk_tier: P1
+    status: todo
+    elaborated: false
+    acceptance: "@semantic-release/github attaches the compiled binaries as release assets; @semantic-release/npm publishes the package; version derives from Conventional Commits only."

@@ -1,0 +1,51 @@
+okf_kind: epic
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+---
+id: e02
+title: GitHub Wiki Integration
+milestone: M3
+wsjf: 3.6
+total_bcps: 5   # 4 (e02s01-03) + 1 placeholder for e02s00, pending real count-bcp (ADR-0006)
+calibration_id: bcp-plus-v1
+risk_tier: P2
+depends_on: [e03, e05]        # full kernel tool (e02s01-03); e02s00 bootstraps at M0, see ADR-0006
+status: todo
+goal: >
+  Render OKF bundles from specs/ to a GitHub Wiki as a derived, read-only
+  human surface (ADR-0001). Auto-published on merge to main; every page carries
+  a stamped "auto-generated — do not edit" banner. Bootstrapped thin at M0
+  (e02s00, ADR-0006) so the wiki's history starts at the project's first
+  commit instead of waiting for the full kernel-rendered tool at M3.
+stories:
+  - id: e02s00
+    title: Wiki bootstrap sync (pre-kernel)
+    milestone: M0
+    bcps: 1                 # placeholder vs Known-3 anchor; re-count via count-bcp once e03 ships (ADR-0006)
+    risk_tier: P3
+    depends_on: []
+    status: todo
+    elaborated: false
+    acceptance: "GitHub Action on every push to main copies specs/adr/*.md, specs/cockpit/state.yaml, and constitution.md verbatim to <repo>.wiki.git, stamps the ADR-0001 §3 do-not-edit banner, and writes a flat _Sidebar.md. No OKF parsing, no lint-wiki — superseded in place by e02s01."
+  - id: e02s01
+    title: publish-to-wiki kernel tool
+    bcps: 2
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "parses OKF bundles, renders Markdown to .wiki.git, stamps the do-not-edit banner (ADR-0001 §3), and generates _Sidebar.md/_Footer.md."
+  - id: e02s02
+    title: Wiki Scaffold Templates
+    bcps: 1
+    risk_tier: P3
+    status: todo
+    elaborated: false
+    acceptance: "bigspec init --with-wiki seeds a .wiki.git repo + the publish-wiki workflow template."
+  - id: e02s03
+    title: GitHub Action auto-publish
+    bcps: 1
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "on merge to main, validate-okf passes then publish-to-wiki pushes; a failed validate-okf blocks the publish."

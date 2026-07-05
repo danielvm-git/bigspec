@@ -1,0 +1,17 @@
+core_value: "Provide non-technical stakeholders with a zero-maintenance, human-readable Wiki surface and allow zero-friction distribution of the CLI via standalone binaries."
+summary: "This initiative bridges the gap between the machine-readable bigspec OKF sources (specs/) and human consumption/usage. It introduces two major capabilities: First, treating GitHub Wikis as a derived CI/CD rendering target for OKF bundles to provide living documentation. Second, introducing a dual-mode distribution pipeline (NPM + Standalone Binaries) managed by semantic-release to allow non-Node developers to adopt the methodology."
+in_scope:
+  - "publish-to-wiki kernel tool to parse OKF bundles and render Markdown for .wiki.git"
+  - "GitHub Action template for CI/CD wiki pushing"
+  - "bigspec init --with-wiki CLI flag"
+  - "CI/CD build steps for compiling standalone binaries (macOS/Linux/Windows)"
+  - "semantic-release configuration for @semantic-release/github binary asset uploads"
+out_of_scope:
+  - "GitHub Pages integration (Docusaurus/Jekyll) — deferred post-v1.0 as the Wiki meets MVP needs."
+  - "Git Submodule approach for the wiki — rejected due to bypassing PR gates (see ADR 0001)."
+  - "Removing the NPM package — deferred, we will maintain dual-mode distribution (ADR 0002)."
+constraints: "Must not duplicate sources of truth (specs/ remains authoritative). Must not require manual execution of the wiki push. Must remain language-agnostic for end-users."
+success_criteria: "A push to main successfully updates a configured .wiki.git repo, and semantic-release successfully attaches compiled binaries to a GitHub release."
+references:
+  - "specs/adr/0001-github-wiki-integration.md"
+  - "specs/adr/0002-dual-mode-distribution.md"

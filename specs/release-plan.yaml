@@ -1,0 +1,114 @@
+okf_kind: cockpit-release
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+supersedes: "specs/release-plan.yaml@HEAD~1"
+commit_range: null
+---
+# Sequencing rule (plan audit 2026-07-04):
+#   Execution order is DEPENDENCY-LAYERED by milestone (M0 -> M4), matching
+#   docs/architecture.md §8. WSJF orders epics ONLY WITHIN a milestone layer.
+#   A high WSJF does NOT promote an epic ahead of a prerequisite it depends on
+#   (classic WSJF blind spot for enabler/foundation work): e01 (distribution)
+#   scores WSJF 7.0 but compiles the kernel, so it cannot precede e03/e05.
+#   "1.0.0" now means what architecture §8 says it means — the loop builds a
+#   real project on plain files with a positive with/without-skill eval delta —
+#   NOT "we can publish binaries." Distribution/wiki are a 0.x infra track.
+
+calibration_id: bcp-plus-v1   # BCP anchors: constitution B9 / ADR-0003
+
+releases:
+  - version: "0.1.0"
+    codename: "Seed"
+    milestone: M0
+    status: planning
+    semantic_release: true
+    bump_hint: minor
+    goal: "Hand-written seed: file-based kernel + 5 seed skills. Run the loop by hand on plain files. Also bootstraps the wiki thin (e02s00, ADR-0006) so its history starts at this release, not at 0.4.0."
+    epics: [e03, e04, e02]
+    stories_only: [e02s00]   # e02's full stories (e02s01-03) still ship at 0.4.0; only the bootstrap ships here
+
+  - version: "0.2.0"
+    codename: "Self-host"
+    milestone: M1
+    status: planned
+    goal: "Use the seed to build the eval harness and prove each core skill earns its place."
+    epics: [e05, e06]
+
+  - version: "0.3.0"
+    codename: "Distribution"
+    milestone: M3
+    status: planned
+    goal: "Dual-mode packaging once there is a kernel to compile."
+    epics: [e01]
+
+  - version: "0.4.0"
+    codename: "Docs surface"
+    milestone: M3
+    status: planned
+    goal: "Upgrade the M0 wiki bootstrap (e02s00) to the full kernel-rendered wiki — OKF parsing, lint-wiki, Glossary/Reference pages (ADR-0004/0005). The wiki itself already exists by this point; this ships the smart renderer, not the wiki's first appearance."
+    epics: [e02]
+    stories_only: [e02s01, e02s02, e02s03]
+
+  - version: "1.0.0"
+    codename: "Proof"
+    milestone: M4
+    status: planned
+    goal: "The loop builds one real showcase project cold on plain files; evals show a positive with/without-skill delta. Epic to be FRAMED at M4 (not pre-invented)."
+    epics: []   # e06 showcase — framed at M4, per architecture §8
+
+epics:
+  - id: e03
+    title: Kernel Foundation
+    milestone: M0
+    wsjf: 2.1              # (V10 + TC9 + RR10) / 14 BCP — foundation; low WSJF, first by dependency
+    total_bcps: 14
+    risk_tier: P1
+    depends_on: []
+    capsule_dir: epics/e03-kernel
+    note: "bp-yaml + validate-okf + one risk-tiered gate. Everything depends on this; sequenced first regardless of WSJF."
+  - id: e04
+    title: Seed Skills (5)
+    milestone: M0
+    wsjf: 2.8              # (V9 + TC8 + RR8) / 9 BCP
+    total_bcps: 9
+    risk_tier: P1
+    depends_on: [e03]
+    capsule_dir: epics/e04-seed-skills
+    note: "survey-context, elaborate-spec, plan-work, develop-tdd, verify-work — enough to run the loop by hand."
+  - id: e05
+    title: Eval Harness
+    milestone: M1
+    wsjf: 4.6              # (V8 + TC6 + RR9) / 5 BCP
+    total_bcps: 5
+    risk_tier: P2
+    depends_on: [e04]
+    capsule_dir: epics/e05-eval-harness
+    note: "with/without-skill delta runner + golden fixtures. Gates the Capstone."
+  - id: e01
+    title: Dual-Mode Distribution Pipeline
+    milestone: M3
+    wsjf: 7.0             # highest WSJF but dependency-gated behind the kernel it compiles
+    total_bcps: 3
+    risk_tier: P1
+    depends_on: [e03, e05]
+    capsule_dir: epics/e01-distribution
+    note: "Bun compile (ADR-0002) + semantic-release GitHub assets. Needs a kernel to compile and evals to prove before shipping public artifacts."
+  - id: e02
+    title: GitHub Wiki Integration
+    milestone: M3
+    wsjf: 3.6
+    total_bcps: 4
+    risk_tier: P2
+    depends_on: [e03, e05]   # full tool (e02s01-03) only; e02s00 bootstrap has no deps, ships at M0 (ADR-0006)
+    capsule_dir: epics/e02-github-wiki
+    note: "Derived render target (ADR-0001). Full kernel tool waits on e03/e05; the wiki itself starts at M0 via a thin bootstrap (e02s00, ADR-0006) so its history is continuous from the first commit."
+  - id: e06
+    title: Bilingual Metrics Telemetry Engine
+    milestone: M1
+    wsjf: 4.2
+    total_bcps: 6
+    risk_tier: P2
+    depends_on: [e05]
+    capsule_dir: epics/e06-metrics-telemetry
+    note: "Surgical, file-based telemetry mapped to DX Core 4, ISO 25010, and CMMI (ADR-0007). Calculates AI Code Retention and Context Fidelity deterministically."

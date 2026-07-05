@@ -1,0 +1,42 @@
+okf_kind: epic
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+---
+id: e03
+title: Kernel Foundation
+milestone: M0
+wsjf: 2.1
+total_bcps: 14
+calibration_id: bcp-plus-v1
+risk_tier: P1
+depends_on: []
+status: todo
+goal: >
+  The file-based kernel that lets the loop run on plain files with no server:
+  bp-yaml (cockpit get/set), validate-okf (kind-aware validator), and one
+  risk-tiered gate. Frozen file contracts here become the "real API from M0".
+stories:
+  - id: e03s01
+    title: bp-yaml get/set over the cockpit
+    bcps: 3                     # KNOWN-3 calibration anchor (B9 / ADR-0003)
+    risk_tier: P1
+    status: todo
+    elaborated: true
+    spec: e03s01-bp-yaml.md
+    tasks: e03s01-tasks.yaml
+    acceptance: "get returns a nested key; set writes it back preserving other keys + frontmatter; missing key errors with path + remediation."
+  - id: e03s02
+    title: validate-okf kind-aware validator (6 kinds + envelope)
+    bcps: 8                     # KNOWN-8 calibration anchor (B9 / ADR-0003)
+    risk_tier: P1
+    status: todo
+    elaborated: false           # SPECIFY on entry — no forward spec pointer yet
+    acceptance: "envelope + per-kind structure/provenance validated for all 6 OKF kinds; gates on structure, never a value; error names the offending field + expected shape."
+  - id: e03s03
+    title: one risk-tiered gate engine
+    bcps: 3
+    risk_tier: P1
+    status: todo
+    elaborated: false
+    acceptance: "given a story's P0-P3 tier, the gate selects the fast/full lane and blocks forward progress until its tier's checks pass."

@@ -1,0 +1,23 @@
+# Execution order is dependency-layered by milestone (see release-plan.yaml).
+# M0: e03, e04, e02s00 (wiki bootstrap, ADR-0006) · M1: e05 · M3: e01, e02s01-03
+e02s00: todo
+e03: todo
+e03s01: todo
+e03s02: todo
+e03s03: todo
+e04: todo
+e04s01: todo
+e04s02: todo
+e04s03: todo
+e04s04: todo
+e04s05: todo
+e05: todo
+e05s01: todo
+e05s02: todo
+e01: todo
+e01s01: todo
+e01s02: todo
+e02: todo
+e02s01: todo
+e02s02: todo
+e02s03: todo

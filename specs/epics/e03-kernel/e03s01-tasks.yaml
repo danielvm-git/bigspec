@@ -1,0 +1,44 @@
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+---
+# Execution Ledger for: bp-yaml get/set over the cockpit (e03s01)
+# Risk tier: P1 (full lane). Checkpoints start FAILING; drive to PASSING via develop-tdd.
+
+story: e03s01
+risk_tier: P1
+verify_suite: "npm test"        # vitest run (package.json)
+
+checkpoints:
+  - id: chk-01
+    intent: "get returns a nested scalar (handoff.next_skill)"
+    verify_cmd: "npm test -- -t 'get returns a nested scalar'"
+    status: FAILING
+  - id: chk-02
+    intent: "set writes a nested key while preserving siblings and the OKF frontmatter"
+    verify_cmd: "npm test -- -t 'set preserves siblings and frontmatter'"
+    status: FAILING
+  - id: chk-03
+    intent: "set creates intermediate maps for a new dotted path"
+    verify_cmd: "npm test -- -t 'set creates intermediate maps'"
+    status: FAILING
+  - id: chk-04
+    intent: "get on a missing key exits non-zero with path + file + remediation hint"
+    verify_cmd: "npm test -- -t 'missing key errors with remediation'"
+    status: FAILING
+  - id: chk-05
+    intent: "idempotent round-trip: re-setting an existing value is byte-stable except the target"
+    verify_cmd: "npm test -- -t 'round-trip is byte-stable'"
+    status: FAILING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING            # P1 assigned
+  - type: Quality
+    blocks_until: "all checkpoints PASSING + lint clean (tsc --noEmit) + fresh-subagent review"
+    state: PENDING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING

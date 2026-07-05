@@ -1,0 +1,39 @@
+id: e06
+title: Bilingual Metrics Telemetry Engine
+status: planned
+description: "Implement the OKF-based metrics tracking pipeline and ASCII dashboard to map agent-native metrics to enterprise frameworks (DX Core 4, ISO 25010, CMMI)."
+stories:
+  - id: e06s01
+    title: OKF Metrics Manifest Generator
+    status: planned
+    bcp: 2
+    description: Calculate AI Code Retention, Agentic Cycle Time, and H/BCP per task and write to OKF manifest.
+    tasks:
+      - description: "Parse git diffs to calculate AI Code Retention."
+        verify: "npm test -- e06s01-retention"
+      - description: "Calculate Agentic Cycle Time and H/BCP."
+        verify: "npm test -- e06s01-cycle-time"
+  - id: e06s02
+    title: ISO 25010 and Context Fidelity Checks
+    status: planned
+    bcp: 2
+    description: Implement ISO/IEC 25010 test-assertion parsing and Spec Drift tracking.
+    tasks:
+      - description: "Map NFRs to ISO characteristics."
+        verify: "npm test -- e06s02-iso"
+  - id: e06s03
+    title: CMMI Spec Maturity Logic
+    status: planned
+    bcp: 1
+    description: Grade OKF specs against CMMI Levels 1-5.
+    tasks:
+      - description: "Implement maturity level grading logic."
+        verify: "npm test -- e06s03-cmmi"
+  - id: e06s04
+    title: ASCII Telemetry Dashboard
+    status: planned
+    bcp: 1
+    description: Generate the final ASCII summary dashboard post-cycle.
+    tasks:
+      - description: "Render metrics into standard CLI ASCII output."
+        verify: "npm test -- e06s04-dashboard"

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bigspec — see it whole before you build it</title>
+<meta name="description" content="bigspec — a spec-driven agentic methodology for solo developers, rebuilt from a blank page. The founding ideas, the 11 building blocks, the loop, and the product.">
+<style>
+:root{
+  --bg:#0b0e14;--bg-2:#11151f;--bg-3:#171c28;--panel:#131824;--line:#232b3a;--line-2:#2e394d;
+  --ink:#e6ebf5;--ink-2:#aab6cc;--ink-3:#6b788f;
+  --amber:#f5a623;--amber-2:#ffc400;--cyan:#45c8e0;--violet:#9b8cff;--green:#4bd08b;--red:#ff6b6b;
+  --font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono","SF Mono","Menlo",monospace;--maxw:1080px;--r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(900px 500px at 80% -10%,rgba(245,166,35,.10),transparent 60%),radial-gradient(700px 500px at 0% 10%,rgba(69,200,224,.07),transparent 55%);background-attachment:fixed}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+h1,h2,h3{line-height:1.12;letter-spacing:-.02em;font-weight:700}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem)}h3{font-size:1.15rem}
+p{color:var(--ink-2)}a{color:var(--cyan);text-decoration:none}a:hover{color:var(--amber-2)}
+code{font-family:var(--font-mono);font-size:.85em;background:var(--bg-3);padding:.12em .4em;border-radius:5px;color:var(--amber-2)}
+.eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:600}
+nav.top{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(11,14,20,.78);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:24px;height:60px}
+nav.top .brand{font-weight:800;letter-spacing:-.03em;font-size:1.05rem;margin-right:auto}nav.top .brand b{color:var(--amber)}
+nav.top a.link{color:var(--ink-3);font-size:.85rem;font-weight:500}nav.top a.link:hover{color:var(--ink)}
+@media(max-width:820px){nav.top a.link{display:none}}
+section{padding:84px 0;border-top:1px solid var(--line)}
+.section-head{max-width:730px;margin-bottom:40px}.section-head h2{margin:10px 0 14px}.section-head p{font-size:1.05rem}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;font-family:var(--font-mono);padding:5px 12px;border-radius:999px;background:var(--bg-3);border:1px solid var(--line-2);color:var(--ink-2)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+.chip.live .dot{background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(75,208,139,0)}100%{box-shadow:0 0 0 0 rgba(75,208,139,0)}}
+.grid{display:grid;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--line-2);transform:translateY(-2px)}
+footer{border-top:1px solid var(--line);padding:40px 0 64px;color:var(--ink-3);font-size:.88rem}
+footer a{color:var(--ink-2)}
+
+/* hero */
+.hero{padding:92px 0 60px;text-align:center}
+.hero h1{font-size:clamp(3rem,9vw,6rem);font-weight:800;letter-spacing:-.05em;background:linear-gradient(180deg,#fff,#9fb0cc);-webkit-background-clip:text;background-clip:text;color:transparent;margin:20px 0 0}
+.hero .tag{font-size:clamp(1.05rem,2.4vw,1.5rem);color:var(--ink);max-width:720px;margin:20px auto 0;font-weight:500;line-height:1.4}
+.hero .tag b{color:var(--amber-2);font-weight:700}
+.hero .sub{font-family:var(--font-mono);font-size:.82rem;color:var(--ink-3);margin:26px auto 0;max-width:660px;line-height:2}
+.hero .chips{display:flex;gap:10px;justify-content:center;margin-top:30px;flex-wrap:wrap}
+
+/* progress tracker */
+.tracker{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-top:8px}
+.tracker .thead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tracker .thead .t{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.tracker .thead .u{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-3)}
+.track{display:flex;align-items:flex-start;gap:0}
+.tp{flex:1;text-align:center;position:relative;padding-top:22px}
+.tp::before{content:"";position:absolute;top:6px;left:calc(-50% + 7px);width:100%;height:2px;background:var(--line-2)}
+.tp:first-child::before{display:none}
+.tp .pip{position:absolute;top:0;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--line-2)}
+.tp .ml{font-family:var(--font-mono);font-weight:700;font-size:.82rem;color:var(--ink-3)}
+.tp .lb{font-size:.68rem;color:var(--ink-3);margin-top:1px}
+.tp[data-state="done"] .pip{background:var(--amber);border-color:var(--amber)}
+.tp[data-state="done"]::before{background:var(--amber)}
+.tp[data-state="done"] .ml{color:var(--amber)}
+.tp[data-state="now"] .pip{background:var(--green);border-color:var(--green);box-shadow:0 0 12px rgba(75,208,139,.55);animation:pulse 2s infinite}
+.tp[data-state="now"]::before{background:linear-gradient(90deg,var(--amber),var(--green))}
+.tp[data-state="now"] .ml{color:var(--green)}
+@media(max-width:640px){.tp .lb{display:none}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{text-align:center;padding:26px 12px}
+.stat .n{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;font-family:var(--font-mono);color:var(--amber)}
+.stat .l{font-size:.82rem;color:var(--ink-3);margin-top:6px}
+
+/* personal note */
+.note{border-left:3px solid var(--amber);background:linear-gradient(90deg,rgba(245,166,35,.06),transparent);padding:22px 26px;border-radius:0 12px 12px 0;margin-bottom:34px}
+.note p{color:var(--ink);font-size:1.05rem;line-height:1.65}.note p+p{margin-top:14px}
+.note .sig{font-family:var(--font-mono);font-size:.8rem;color:var(--amber);margin-top:16px}
+
+/* lineage */
+.lineage{display:flex;flex-direction:column}
+.wave{display:grid;grid-template-columns:96px 1fr;gap:18px;position:relative;padding-bottom:26px}
+.wave:not(:last-child)::before{content:"";position:absolute;left:47px;top:34px;bottom:-4px;width:2px;background:linear-gradient(var(--line-2),var(--amber));opacity:.5}
+.wave .era{font-family:var(--font-mono);font-size:.78rem;font-weight:700;color:var(--amber);text-align:right;padding-top:20px}
+.wave .body{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px}
+.wave .body .src{font-weight:700;color:var(--ink)}
+.wave .body .contrib{color:var(--ink-2);font-size:.94rem;margin-top:3px}
+.wave .body .tension{color:var(--ink-3);font-size:.84rem;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.wave .body .tension b{color:var(--red);font-weight:600}
+.wave.synth .body{border-color:var(--amber);background:linear-gradient(var(--panel),rgba(245,166,35,.06))}
+
+/* keep/cut/replace */
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.board{grid-template-columns:1fr}}
+.col-head{display:flex;align-items:center;gap:9px;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.col-head .tk{font-family:var(--font-mono);font-size:.72rem;padding:3px 8px;border-radius:6px}
+.keep .tk{background:rgba(75,208,139,.14);color:var(--green)}
+.cut .tk{background:rgba(255,107,107,.14);color:var(--red)}
+.replace .tk{background:rgba(155,140,255,.16);color:var(--violet)}
+.board li{list-style:none;font-size:.9rem;color:var(--ink-2);padding:9px 0;border-top:1px solid var(--line)}
+.board li b{color:var(--ink);font-weight:600}.board .arrow{color:var(--violet)}
+
+/* building blocks (interactive) */
+.stack{display:flex;flex-direction:column-reverse;gap:8px}
+details.blk{border-radius:12px;border:1px solid var(--line);background:var(--panel);overflow:hidden;transition:border-color .18s}
+details.blk[open]{border-color:var(--line-2)}
+details.blk summary{display:grid;grid-template-columns:60px 1fr 30px;align-items:center;cursor:pointer;list-style:none;transition:transform .18s}
+details.blk summary::-webkit-details-marker{display:none}
+details.blk summary:hover{transform:translateX(4px)}
+.blk .id{align-self:stretch;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:800;font-size:1.05rem;color:var(--bg);background:var(--amber);min-height:66px}
+.blk .meta{padding:14px 18px}.blk .meta .nm{font-weight:700;color:var(--ink)}.blk .meta .es{font-size:.88rem;color:var(--ink-2);margin-top:2px}
+.blk .caret{color:var(--ink-3);font-size:.9rem;text-align:center;transition:transform .2s}
+details.blk[open] .caret{transform:rotate(180deg);color:var(--amber)}
+.blk .detail{padding:2px 18px 18px 78px;border-top:1px solid var(--line);margin-top:2px}
+.blk .detail .row{font-size:.86rem;margin-top:10px}
+.blk .detail .k{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:2px}
+.blk .detail .v{color:var(--ink-2)}
+.blk[data-layer="think"] .id{background:var(--cyan)}
+.blk[data-layer="struct"] .id{background:var(--violet)}
+.blk[data-layer="quality"] .id{background:var(--amber)}
+.blk[data-layer="context"] .id{background:var(--green)}
+.blk[data-layer="effort"] .id{background:#e07b7b}
+.blk[data-layer="cohere"] .id{background:#d98cff}
+.blk.cap{border-color:var(--amber);background:linear-gradient(90deg,rgba(245,166,35,.10),var(--panel))}
+.blk.cap .id{background:linear-gradient(135deg,var(--amber),var(--amber-2));font-size:1.3rem}
+.layer-label{display:grid;grid-template-columns:60px 1fr;margin:14px 0 2px}
+.layer-label .tx{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-left:18px;border-left:2px solid var(--line-2)}
+.foundation-note{text-align:center;font-family:var(--font-mono);font-size:.75rem;color:var(--ink-3);margin-top:14px;letter-spacing:.08em}
+.hint{text-align:center;font-size:.82rem;color:var(--ink-3);margin-bottom:20px}
+
+/* nouns */
+.nouns{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.nouns{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.nouns{grid-template-columns:1fr}}
+.noun .n{font-family:var(--font-mono);color:var(--amber);font-weight:700;font-size:.95rem}
+.noun .d{font-size:.85rem;color:var(--ink-2);margin-top:6px}
+
+/* okf */
+.envelope{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:18px 20px;font-family:var(--font-mono);font-size:.8rem;line-height:1.8;color:var(--ink-2);margin-bottom:26px;overflow-x:auto}
+.envelope .c{color:var(--ink-3)}.envelope .key{color:var(--cyan)}.envelope .val{color:var(--amber-2)}
+.kinds{grid-template-columns:repeat(3,1fr)}
+@media(max-width:820px){.kinds{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kinds{grid-template-columns:1fr}}
+.kind .kk{font-family:var(--font-mono);font-size:.82rem;color:var(--amber);font-weight:700}
+.kind .kd{font-size:.84rem;color:var(--ink-2);margin-top:5px}
+.kind .kt{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-3);margin-top:8px}
+.tool-owned{margin-top:16px;font-size:.86rem;color:var(--ink-3);text-align:center}
+.tool-owned code{color:var(--violet)}
+
+/* loop */
+.loop-frame{border:1px dashed var(--amber);border-radius:18px;padding:30px 22px 24px;position:relative;background:rgba(245,166,35,.03)}
+.loop-frame .spec-label{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 14px;font-family:var(--font-mono);font-size:.75rem;color:var(--amber);letter-spacing:.1em}
+.movements{display:flex;gap:0;flex-wrap:wrap;justify-content:center}
+.mv{flex:1;min-width:130px;text-align:center;padding:8px;position:relative}
+.mv .step{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-3)}
+.mv .name{font-weight:800;font-size:1.05rem;margin:4px 0 6px;color:var(--ink)}
+.mv .what{font-size:.8rem;color:var(--ink-2)}
+.mv:not(:last-child)::after{content:"→";position:absolute;right:-8px;top:26px;color:var(--amber);font-weight:700}
+@media(max-width:640px){.mv:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-4px}}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+@media(max-width:640px){.lanes{grid-template-columns:1fr}}
+.lane{padding:16px 18px;border-radius:12px;border:1px solid var(--line);background:var(--panel)}
+.lane .h{font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.lane .h .b{font-family:var(--font-mono);font-size:.7rem;padding:2px 7px;border-radius:5px}
+.lane.fast .h .b{background:rgba(75,208,139,.15);color:var(--green)}
+.lane.full .h .b{background:rgba(245,166,35,.15);color:var(--amber)}
+.lane p{font-size:.84rem;margin-top:6px}
+
+/* roadmap */
+.road{display:flex;flex-direction:column}
+.mile{display:grid;grid-template-columns:92px 1fr;gap:20px;position:relative;padding-bottom:24px}
+.mile::before{content:"";position:absolute;left:99px;top:26px;bottom:-6px;width:2px;background:var(--line-2)}
+.mile:last-child::before{display:none}
+.mile .tag-col{text-align:right}
+.mile .m{font-family:var(--font-mono);font-weight:800;color:var(--amber);font-size:1rem}
+.mile .dot{position:absolute;left:93px;top:6px;width:15px;height:15px;border-radius:50%;background:var(--bg);border:3px solid var(--amber)}
+.mile.done .dot{background:var(--amber)}
+.mile.v1 .dot{border-color:var(--green);background:var(--green);box-shadow:0 0 14px rgba(75,208,139,.5)}
+.mile .body h3{color:var(--ink)}.mile .body p{font-size:.9rem;margin-top:4px}
+.mile .st{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+.mile.done .st{color:var(--green)}.mile.now .st{color:var(--amber)}.mile.next .st{color:var(--ink-3)}
+
+/* product */
+.product{grid-template-columns:1fr 1fr}
+@media(max-width:760px){.product{grid-template-columns:1fr}}
+.deliverable{padding:28px}
+.deliverable .k{font-family:var(--font-mono);font-size:.75rem;color:var(--amber);letter-spacing:.1em;text-transform:uppercase}
+.deliverable h3{margin:8px 0 10px;font-size:1.3rem}
+.deliverable pre{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px;font-family:var(--font-mono);font-size:.8rem;color:var(--ink-2);overflow-x:auto}
+.deliverable pre .c{color:var(--ink-3)}.deliverable pre .p{color:var(--green)}
+.outcome-line{text-align:center;font-size:1.15rem;color:var(--ink);margin-top:40px;font-weight:500;max-width:720px;margin:40px auto 0}
+.outcome-line b{color:var(--amber-2)}
+.cta{text-align:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.92rem;padding:12px 22px;border-radius:10px;border:1px solid var(--line-2);color:var(--ink);background:var(--bg-3);margin:6px;transition:transform .18s}
+.btn.primary{background:var(--amber);color:var(--bg);border-color:var(--amber)}.btn:hover{transform:translateY(-2px)}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <span class="brand">big<b>spec</b></span>
+    <a class="link" href="#origin">Origin</a>
+    <a class="link" href="#lineage">Ideas</a>
+    <a class="link" href="#lessons">Lessons</a>
+    <a class="link" href="#blocks">Blocks</a>
+    <a class="link" href="#okf">OKF</a>
+    <a class="link" href="#loop">Loop</a>
+    <a class="link" href="#roadmap">Roadmap</a>
+    <a class="link" href="#metrics">Metrics</a>
+    <a class="link" href="#product">Product</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="chip live"><span class="dot"></span> M0 · bootstrap in progress</span>
+    <h1>bigspec</h1>
+    <p class="tag">A spec-driven agentic methodology for solo developers —
+      <b>rebuilt from a blank page, knowing exactly what to keep.</b></p>
+    <p class="sub">constitution-first &nbsp;·&nbsp; OKF artifacts &nbsp;·&nbsp;
+      fractal loop: Frame → Specify → Plan → Build → Prove &nbsp;·&nbsp; native BCP sizing &nbsp;·&nbsp; outcome evals</p>
+    <div class="chips">
+      <span class="chip"><span class="dot"></span> Born from bigpowers</span>
+      <span class="chip"><span class="dot"></span> Greenfield rebuild</span>
+      <span class="chip"><span class="dot"></span> Kernel-first · MCP-last</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PROGRESS TRACKER (hand-updatable) ============ -->
+<!-- ▼▼▼ TO UPDATE PROGRESS: change data-state on each .tp below.
+     Values: "done" (amber, filled) · "now" (green, pulsing = current) · "next" (grey).
+     Also edit the "last updated" date in .u. Keep exactly one milestone as "now". ▼▼▼ -->
+<div class="wrap" style="margin-top:-20px">
+  <div class="tracker">
+    <div class="thead">
+      <span class="t">◆ Live build status</span>
+      <span class="u">last updated: 2026-07-04 · M0 design pack complete</span>
+    </div>
+    <div class="track">
+      <div class="tp" data-state="done"><span class="pip"></span><div class="ml">M0</div><div class="lb">Seed</div></div>
+      <div class="tp" data-state="now"><span class="pip"></span><div class="ml">M1</div><div class="lb">Self-host</div></div>
+      <div class="tp" data-state="next"><span class="pip"></span><div class="ml">M2</div><div class="lb">Corpus</div></div>
+      <div class="tp" data-state="next"><span class="pip"></span><div class="ml">M3</div><div class="lb">Package</div></div>
+      <div class="tp" data-state="next"><span class="pip"></span><div class="ml">M4</div><div class="lb">Proof</div></div>
+      <div class="tp" data-state="next"><span class="pip"></span><div class="ml">v1.0</div><div class="lb">Ship</div></div>
+      <div class="tp" data-state="next"><span class="pip"></span><div class="ml">M5</div><div class="lb">MCP</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ORIGIN ============ -->
+<section id="origin">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Where the idea came from</span>
+      <h2>bigpowers proved the thesis. It also taught the lesson.</h2>
+    </div>
+
+    <div class="note">
+      <p>I spent 41 days building <b style="color:var(--ink)">bigpowers</b> — a prescriptive methodology
+        that distills 17 years of software-engineering discipline into agent skills. It worked. 98 releases,
+        98% compliance, a real lifecycle, a live cockpit. But somewhere around the 74th skill I realised
+        I was maintaining complexity I had <em>created</em>, not complexity the problem demanded.</p>
+      <p>So I stopped adding and started listening to the repo. It kept telling me the same thing:
+        <b style="color:var(--ink)">most of what I built was accidental.</b> The skill-count was vanity.
+        The 27 reference docs restated one constitution. The four-target sync pipeline was the single
+        biggest source of duplication. Three different things were all wearing the word "skill."</p>
+      <p><b style="color:var(--amber-2)">bigspec is the version I'd build if I knew all that on day one —
+        which now I do.</b> Same soul, none of the debt, poured in the right order. This page is me
+        laying out the whole foundation before I pour a single block, so I don't repeat myself.</p>
+      <div class="sig">— building in public, from M0</div>
+    </div>
+
+    <div class="grid stats">
+      <div class="stat card"><div class="n">41</div><div class="l">days of bigpowers</div></div>
+      <div class="stat card"><div class="n">98</div><div class="l">releases shipped</div></div>
+      <div class="stat card"><div class="n">74→29</div><div class="l">skills, purified to procedures</div></div>
+      <div class="stat card"><div class="n">17yr</div><div class="l">of discipline distilled</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LINEAGE ============ -->
+<section id="lineage">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How the ideas concatenate</span>
+      <h2>Not a flat list of influences — a layer cake.</h2>
+      <p>Each wave of thinking builds on the last and <b style="color:var(--ink)">resolves a tension the
+        previous one created</b>. No layer replaces its predecessor; it answers a problem the predecessor
+        opened. This lineage is the intellectual spine bigspec inherits.</p>
+    </div>
+    <div class="lineage">
+      <div class="wave"><div class="era">2008</div><div class="body">
+        <div class="src">Uncle Bob — Clean Code</div>
+        <div class="contrib">SRP, Boy Scout Rule, F.I.R.S.T tests, intention-revealing names.</div>
+        <div class="tension">The craftsmanship floor. Everything stands on it.</div></div></div>
+      <div class="wave"><div class="era">2018</div><div class="body">
+        <div class="src">Ousterhout — A Philosophy of Software Design</div>
+        <div class="contrib">Deep modules, information hiding, define errors out of existence.</div>
+        <div class="tension"><b>Resolves:</b> small functions alone create shallow modules with bloated interfaces.</div></div></div>
+      <div class="wave"><div class="era">2023–24</div><div class="body">
+        <div class="src">Karpathy · Pocock · Superpowers</div>
+        <div class="contrib">Think-first planning, verb-noun skill architecture, hard gates, zoom-out strategy.</div>
+        <div class="tension"><b>Resolves:</b> raw LLMs have no discipline — they need orchestration, not raw prompting.</div></div></div>
+      <div class="wave"><div class="era">2024</div><div class="body">
+        <div class="src">Wasowski (SDD) · BCP</div>
+        <div class="contrib">Specs as the human–agent interface; business complexity as a pre-build sizing unit.</div>
+        <div class="tension"><b>Resolves:</b> agents drift without a verifiable spec — BDD Gherkin closes the loop.</div></div></div>
+      <div class="wave"><div class="era">2026</div><div class="body">
+        <div class="src">Akita — Clean Code for AI Agents · GSD · BMAD · OKF</div>
+        <div class="contrib">Grep-ability &amp; token economy · context-rot &amp; fresh subagents · document lifecycle &amp; P0–P3 risk tiers · one universal artifact envelope.</div>
+        <div class="tension"><b>Resolves:</b> rules written for humans need re-ranking for agents; context rot is the real failure mode.</div></div></div>
+      <div class="wave synth"><div class="era">bigspec</div><div class="body">
+        <div class="src">The synthesis — one executable discipline</div>
+        <div class="contrib">All the above are principles. bigspec turns them into a single fractal loop, one constitution, hard gates scaled by risk, and outcome evals that prove it produces better software.</div>
+        <div class="tension" style="border-color:var(--amber);color:var(--amber-2)">The whole point: make the layer cake <em>run</em>.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LESSONS ============ -->
+<section id="lessons">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Building without the same errors</span>
+      <h2>Every bigpowers primitive, put on trial.</h2>
+      <p>A blank page is only valuable if you know what survives contact with it. Each load-bearing idea
+        was cross-examined: <b style="color:var(--green)">keep</b> it, <b style="color:var(--red)">cut</b> it,
+        or <b style="color:var(--violet)">replace</b> it. This board is the difference between a rewrite and a rebuild.</p>
+    </div>
+    <div class="board">
+      <div class="col keep">
+        <div class="col-head"><span class="tk">KEEP</span> the soul</div>
+        <ul>
+          <li><b>Spec as source of truth</b> — survives code regeneration</li>
+          <li><b>The layer-cake doctrine</b> — provenance in one place</li>
+          <li><b>Verb-noun procedures</b> — a public API of skills</li>
+          <li><b>The fractal loop</b> — one shape at every scope</li>
+          <li><b>File-based YAML cockpit</b> — diffable, greppable, no server</li>
+          <li><b>BCP sizing</b> — "how much effort is left?"</li>
+          <li><b>next_skill handoff</b> — resume after any interruption</li>
+          <li><b>semantic-release</b> — versioning is automated truth</li>
+        </ul>
+      </div>
+      <div class="col cut">
+        <div class="col-head"><span class="tk">CUT</span> the vanity</div>
+        <ul>
+          <li><b>74-skill count as a feature</b> — a metric that fights maintenance</li>
+          <li><b>27 reference docs</b> — they just restate the constitution</li>
+          <li><b>Bespoke 4-target sync pipeline</b> — the biggest source of duplication</li>
+          <li><b>Dual epic formats</b> — one capsule directory, always</li>
+          <li><b>Skills for tools &amp; rules</b> — those are kernel and constitution</li>
+          <li><b><code>_LATEST</code> filename hack</b> — git already versions and freezes</li>
+        </ul>
+      </div>
+      <div class="col replace">
+        <div class="col-head"><span class="tk">REPLACE</span> the shape</div>
+        <ul>
+          <li><b>6-phase lifecycle</b> <span class="arrow">→</span> 5 fractal movements, spec-anchored</li>
+          <li><b>94% self-compliance gate</b> <span class="arrow">→</span> outcome evals (with/without-skill Δ)</li>
+          <li><b>Uniform hard gates</b> <span class="arrow">→</span> risk-tiered P0–P3 (fast lane vs full lane)</li>
+          <li><b>Skills-first, infra-late</b> <span class="arrow">→</span> kernel-first, MCP-last</li>
+          <li><b>External counting tool</b> <span class="arrow">→</span> native <code>count-bcp</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUILDING BLOCKS (interactive) ============ -->
+<section id="blocks">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The foundation, poured in order</span>
+      <h2>11 building blocks — laid bottom-up, by dependency.</h2>
+      <p>This is <b style="color:var(--ink)">not chronological</b> — it's the order in which the foundation
+        is poured. Each block assumes the ones beneath it already exist. Read from the bottom up:
+        the substrate first, the synthesis last, the proof on top.</p>
+    </div>
+    <p class="hint">▸ click any block to see its rule &amp; provenance</p>
+
+    <div class="stack">
+      <div class="layer-label"><div></div><div class="tx">How the agent thinks</div></div>
+
+      <details class="blk" data-layer="think"><summary><div class="id">B0</div>
+        <div class="meta"><div class="nm">Token / Context Substrate</div><div class="es">Everything is authored under a token budget — written to be consumed linearly by a machine.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Progressive disclosure (frontmatter → summary → detail); no filler or restated code; one-line runnable <code>verify:</code> commands; deep modules over chatty ones.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">Context Engineering — Write / Select / Compress / Isolate.</span></div></div></details>
+
+      <details class="blk" data-layer="think"><summary><div class="id">B1</div>
+        <div class="meta"><div class="nm">Agent-Grade Craftsmanship</div><div class="es">The code floor re-ranked for agents: SRP, deep modules, grep-able symbols, remediation-carrying errors.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Functions do one thing (4–20 lines); files &lt; 300 lines; deep modules (simple interface, hidden complexity); public symbols grep to &lt; 5 results; errors carry the offending value + a remediation hint.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">Uncle Bob (Clean Code) → Ousterhout (deep modules) → Akita (Clean Code for AI Agents).</span></div></div></details>
+
+      <details class="blk" data-layer="think"><summary><div class="id">B2</div>
+        <div class="meta"><div class="nm">Think-First Behavior</div><div class="es">Understand before acting; surface assumptions; ship the minimum; loop until verified, not assumed.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Surface assumptions before writing code; present multiple readings of an ambiguous request; ship the MVP; edits are surgical; loop until behavioral correctness is verified.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">Karpathy; extended-thinking / reasoning patterns.</span></div></div></details>
+
+      <div class="layer-label"><div></div><div class="tx">How work is structured</div></div>
+
+      <details class="blk" data-layer="struct"><summary><div class="id">B3</div>
+        <div class="meta"><div class="nm">The Skill Primitive</div><div class="es">A skill is only a procedure. Rules live in the constitution; tools live in the kernel.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Verb-noun kebab-case names (a public API); every skill declares <code>effort</code>, <code>spawn</code>, <code>risk</code>, <code>movement</code> and a behavioral <code>verify:</code>; each writes <code>handoff.next_skill</code> as its last action.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">Pocock (Agent Skills); domain probes.</span></div></div></details>
+
+      <details class="blk" data-layer="struct"><summary><div class="id">B4</div>
+        <div class="meta"><div class="nm">Spec-as-Contract</div><div class="es">The durable, testable spec is the source of truth — not the chat, not the code. Code is last-mile output.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Every epic has a spec with scope, ubiquitous-language glossary, and Gherkin acceptance criteria; the spec feeds the story→BCP pipeline; every criterion is a verifiable assertion with a runnable <code>verify:</code>.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">Wasowski (SDD + BDD); Spec-Kit (constitution + executable intent).</span></div></div></details>
+
+      <div class="layer-label"><div></div><div class="tx">How quality is enforced</div></div>
+
+      <details class="blk" data-layer="quality"><summary><div class="id">B5</div>
+        <div class="meta"><div class="nm">Risk-Tiered Verification</div><div class="es">Proof is proportionate to risk. Trivial work takes the fast lane; critical work takes the full gauntlet.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Every story is tagged P0–P3 at plan time; verification depth follows the tier; tests obey F.I.R.S.T and assert behavior through public APIs; NFRs are gates for P0/P1, not afterthoughts.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">BMAD TEA (P0–P3 risk-based test depth, NFR gates); TDD / F.I.R.S.T; STRIDE.</span></div></div></details>
+
+      <details class="blk" data-layer="quality"><summary><div class="id">B6</div>
+        <div class="meta"><div class="nm">Gates &amp; Hard-Stops</div><div class="es">Progress blocks until conditions are met — but gates are risk-scaled, so they never become fatigue.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">No code before the design is approved; name "red-flag" rationalizations ("too simple to plan"); independent reviews run in a fresh subagent context; two-stage review (self-audit → external) precedes merge.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">Superpowers (hard gates, red flags); four gate types — Confirm / Quality / Risk / Completeness.</span></div></div></details>
+
+      <div class="layer-label"><div></div><div class="tx">How context is managed</div></div>
+
+      <details class="blk" data-layer="context"><summary><div class="id">B7</div>
+        <div class="meta"><div class="nm">Context Isolation</div><div class="es">Context rot is the primary failure mode. The fix is fresh-context subagents with file-based handoff.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Heavy work (<code>effort: heavy</code>, <code>spawn: subagent</code>) runs in a fresh context and returns only its result; the orchestrator stays lean; <code>handoff.next_skill</code> lets any interruption resume exactly where it stopped.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">GSD (context-rot thesis, fresh-context subagents, effort budgeting).</span></div></div></details>
+
+      <details class="blk" data-layer="context"><summary><div class="id">B8</div>
+        <div class="meta"><div class="nm">Self-Describing Artifacts (OKF)</div><div class="es">Every generated file is an OKF bundle. One envelope, one validator, templates as data.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Each artifact carries YAML frontmatter with <code>okf_kind</code>, <code>okf_version</code>, provenance; <code>validate-okf</code> is the single kind-aware gate for <code>specs/</code>; validators gate on structure &amp; provenance, never a value. <code>_LATEST</code> is abolished.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">OKF — Open Knowledge Format. <a href="#okf">See the spine below ↓</a></span></div></div></details>
+
+      <div class="layer-label"><div></div><div class="tx">How effort is tracked</div></div>
+
+      <details class="blk" data-layer="effort"><summary><div class="id">B9</div>
+        <div class="meta"><div class="nm">Effort Accounting (BCP)</div><div class="es">One sizing unit runs the roadmap — counted from the spec by native count-bcp, never guessed.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">BCP is a sum of per-dimension element sizes, counted from the story by an Element Router; stories carry no gestalt SIZE; every count is gated on <code>calibration_id</code>, never the number; velocity series segment by calibration. Anchored to a known-3 and known-8 exemplar.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">BCP — Business Complexity Points (CI&amp;T / Itaú); BCP-Plus 13-dimension methodology.</span></div></div></details>
+
+      <div class="layer-label"><div></div><div class="tx">How it all coheres</div></div>
+
+      <details class="blk" data-layer="cohere"><summary><div class="id">B10</div>
+        <div class="meta"><div class="nm">The Synthesis</div><div class="es">One fractal loop, one constitution, hard gates scaled by risk — the principles become one discipline.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">The loop (Frame → Specify → Plan → Build → Prove → ship) runs identically at project, epic, and story scope; every skill maps to exactly one movement; the spec is the invariant across every movement; the constitution is one file.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">BMAD (document lifecycle) + GSD (execution framework), synthesized.</span></div></div></details>
+
+      <div class="layer-label"><div></div><div class="tx">How it proves itself</div></div>
+
+      <details class="blk cap"><summary><div class="id">★</div>
+        <div class="meta"><div class="nm">Capstone · Outcome Evals</div><div class="es">The foundation proves it produces better software — a with-skill vs without-skill delta on real tasks — not that it obeys its own philosophy.</div></div>
+        <div class="caret">▾</div></summary>
+        <div class="detail"><div class="row"><span class="k">Rule</span><span class="v">Each skill ships an eval case; the headline proof is a positive with-skill vs without-skill delta (pass@k + token cost) on real tasks; a thin <code>constitution-lint</code> keeps structural invariants, but self-compliance is not the quality gate.</span></div>
+        <div class="row"><span class="k">Provenance</span><span class="v">anthropic/skills eval methodology. Replaces the legacy 94% self-compliance gate.</span></div></div></details>
+    </div>
+    <div class="foundation-note">▲ poured last · proven on top &nbsp;&nbsp;|&nbsp;&nbsp; B0 substrate · poured first ▼</div>
+  </div>
+</section>
+
+<!-- ============ NOUNS ============ -->
+<section id="nouns">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The whole vocabulary</span>
+      <h2>Seven nouns. That's the entire model.</h2>
+      <p>A blank repo needs a small, orthogonal vocabulary. The discipline that keeps the corpus from
+        ballooning back to 74: <b style="color:var(--ink)">rules are not skills, tools are not skills, docs are not skills.</b></p>
+    </div>
+    <div class="grid nouns">
+      <div class="card noun"><div class="n">Constitution</div><div class="d">One file. Immutable principles, risk tiers, conventions. The single source of rules.</div></div>
+      <div class="card noun"><div class="n">Spec</div><div class="d">The durable, testable statement of intent. Lives in git; survives code regeneration.</div></div>
+      <div class="card noun"><div class="n">Cockpit</div><div class="d">Machine state — active epic, handoff, metrics. YAML files via <code>bp-yaml</code>. No server.</div></div>
+      <div class="card noun"><div class="n">Skill</div><div class="d">A procedure: a verb-noun, progressively-disclosed workflow. Nothing else is a skill.</div></div>
+      <div class="card noun"><div class="n">Kernel</div><div class="d">The deterministic runtime: gate engine, bp-yaml, release, eval harness. Tools, not prose.</div></div>
+      <div class="card noun"><div class="n">Pack</div><div class="d">Optional, independently-versioned bundle of skills + templates. Shipped via marketplace.</div></div>
+      <div class="card noun"><div class="n">Cycle</div><div class="d">One pass of the loop at any scope — the unit the ledger and metrics attach to.</div></div>
+      <div class="card noun" style="border-color:var(--amber);background:linear-gradient(var(--panel),rgba(245,166,35,.05))"><div class="n" style="color:var(--amber-2)">The discipline</div><div class="d">Rules → constitution. Tools → kernel. Docs → one file. Only procedures are skills.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OKF SPINE ============ -->
+<section id="okf">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The artifact model (B8, expanded)</span>
+      <h2>One envelope wraps every file. One validator gates them all.</h2>
+      <p>Today's bigpowers runs three overlapping doc conventions. bigspec collapses them into a single
+        <b style="color:var(--ink)">OKF envelope</b> — every generated file carries the same frontmatter,
+        so <code>validate-okf</code> is <em>the</em> gate for the whole <code>specs/</code> tree.</p>
+    </div>
+
+    <div class="envelope">
+<span class="c"># the universal envelope — every artifact starts here</span>
+<span class="key">okf_kind</span>: <span class="val">&lt;string&gt;</span>          <span class="c"># "story", "epic", "cockpit-state"…</span>
+<span class="key">okf_version</span>: <span class="val">"1.0"</span>
+<span class="key">generated_by</span>: <span class="val">&lt;string&gt;</span>      <span class="c"># "skill:elaborate-spec" | "human"</span>
+<span class="key">generated_at</span>: <span class="val">&lt;iso-8601&gt;</span>
+<span class="key">supersedes</span>: <span class="val">&lt;filepath|null&gt;</span>  <span class="c"># kills the _LATEST hack</span>
+<span class="key">commit_range</span>: <span class="val">&lt;string|null&gt;</span> <span class="c"># traceability</span>
+    </div>
+
+    <div class="grid kinds">
+      <div class="card kind"><div class="kk">cockpit-state</div><div class="kd">Machine state — active epic/story, current movement, <code>handoff.next_skill</code>. The "real API" from day 0.</div><div class="kt">read/written by the kernel</div></div>
+      <div class="card kind"><div class="kk">story</div><div class="kd">Durable intent + input to the counter. Context, actors, elements, NFRs, Gherkin. <b>No gestalt SIZE field.</b></div><div class="kt">generated_by · elaborate-spec</div></div>
+      <div class="card kind"><div class="kk">glossary</div><div class="kd">Domain ground truth — entities, roles, quality rules. Input to native <code>count-bcp</code> (dims 5/6/7/11–13).</div><div class="kt">generated_by · define-language</div></div>
+      <div class="card kind"><div class="kk">epic</div><div class="kd">Roadmap container. WSJF prioritization + a story table that sums their BCP into a Job Size.</div><div class="kt">generated_by · plan-work</div></div>
+      <div class="card kind"><div class="kk">tasks</div><div class="kd">Execution ledger derived from acceptance criteria. Checkpoints transition FAILING → PASSING → VERIFIED.</div><div class="kt">generated_by · plan-work</div></div>
+      <div class="card kind" style="border-color:var(--violet)"><div class="kk" style="color:var(--violet)">tool-owned</div><div class="kd">Kinds the methodology references but never hand-templates — the producing tool owns the schema.</div><div class="kt">bcp-count · verification-report · story-metrics</div></div>
+    </div>
+    <p class="tool-owned">Gate on <code>okf_kind</code> and structure — <b style="color:var(--ink-2)">never on a value.</b>
+      A rule you can only verify by hard-coding a magic number is a rule in the wrong place.</p>
+  </div>
+</section>
+
+<!-- ============ LOOP ============ -->
+<section id="loop">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it runs</span>
+      <h2>One loop, five movements, wrapped around the spec.</h2>
+      <p>The same five movements run at <b style="color:var(--ink)">project scale</b> (once),
+        <b style="color:var(--ink)">epic scale</b> (per epic), and <b style="color:var(--ink)">story scale</b>
+        (per story). The spec is the fixed point every movement reads and refines — you never leave it behind a phase gate.</p>
+    </div>
+    <div class="loop-frame">
+      <span class="spec-label">◆ THE SPEC — the fixed point ◆</span>
+      <div class="movements">
+        <div class="mv"><div class="step">01</div><div class="name">Frame</div><div class="what">understand problem + context</div></div>
+        <div class="mv"><div class="step">02</div><div class="name">Specify</div><div class="what">intent → durable testable spec</div></div>
+        <div class="mv"><div class="step">03</div><div class="name">Plan</div><div class="what">decompose, risk-tier, size, order</div></div>
+        <div class="mv"><div class="step">04</div><div class="name">Build</div><div class="what">TDD vertical slices, isolated</div></div>
+        <div class="mv"><div class="step">05</div><div class="name">Prove</div><div class="what">verify by risk tier, then ship</div></div>
+      </div>
+      <div class="lanes">
+        <div class="lane fast"><div class="h"><span class="b">P3 · fast lane</span></div><p>Trivial change: <code>quick-fix</code> → verify → ship. Gate discipline without gate fatigue.</p></div>
+        <div class="lane full"><div class="h"><span class="b">P0–P2 · full lane</span></div><p>Risky change: the whole movement chain — spec, plan, TDD, review, security, completeness critic.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it gets built</span>
+      <h2>It builds itself — kernel-first, MCP-last.</h2>
+      <p>The reborn repo bootstraps with a minimal seed of itself, then <b style="color:var(--ink)">dogfoods
+        the loop to build the rest</b>. The deliberate inverse of bigpowers, which grew skills first and
+        extracted infrastructure late — the source of most of its debt.</p>
+    </div>
+    <div class="road">
+      <div class="mile done"><div class="dot"></div><div class="tag-col"><div class="m">M0</div><div class="st">complete</div></div>
+        <div class="body"><h3>Seed — the design pack</h3><p>constitution.md · OKF spine · architecture. Then a thin file-based kernel (<code>bp-yaml</code> + one risk-tiered gate) and 5 hand-written bootstrap skills. Just enough to run the loop by hand, on plain files.</p></div></div>
+      <div class="mile now"><div class="dot"></div><div class="tag-col"><div class="m">M1</div><div class="st">next — self-host</div></div>
+        <div class="body"><h3>Self-host</h3><p>Use the seed to specify and build the rest of the kernel: gate engine, BCP roll-up, semantic-release, eval harness, plugin packaging. From here every commit is a dogfooding datapoint.</p></div></div>
+      <div class="mile next"><div class="dot"></div><div class="tag-col"><div class="m">M2</div><div class="st">skill corpus</div></div>
+        <div class="body"><h3>Author the ~29 procedures</h3><p>Each ships a behavioral <code>verify:</code> <em>and</em> an eval case. No skill lands without proving it helps.</p></div></div>
+      <div class="mile next"><div class="dot"></div><div class="tag-col"><div class="m">M3</div><div class="st">packaging</div></div>
+        <div class="body"><h3>Ship as a plugin</h3><p><code>marketplace.json</code>, plugin bundle, <code>bigspec init</code> scaffold. Optional packs split out.</p></div></div>
+      <div class="mile next"><div class="dot"></div><div class="tag-col"><div class="m">M4</div><div class="st">proof</div></div>
+        <div class="body"><h3>Build a real project cold</h3><p>One showcase project end-to-end. Publish the BCP burn-down + eval deltas as public receipts.</p></div></div>
+      <div class="mile v1"><div class="dot"></div><div class="tag-col"><div class="m">v1.0</div><div class="st" style="color:var(--green)">the milestone</div></div>
+        <div class="body"><h3>The loop builds a real project on plain files</h3><p>And evals show a positive with-skill delta across the core skills. <b style="color:var(--green)">No MCP required.</b></p></div></div>
+      <div class="mile next"><div class="dot"></div><div class="tag-col"><div class="m">M5</div><div class="st">post-v1.0</div></div>
+        <div class="body"><h3>MCP — the last piece</h3><p>Wrap the already-proven file cockpit in an MCP server. A pure convenience layer, removable, never depended on. Files stay authoritative forever.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METRICS ============ -->
+<section id="metrics">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it proves it's working</span>
+      <h2>BCP runs the roadmap. Telemetry proves the work is real.</h2>
+      <p>In bigpowers this lived in <code>cycle-times.yaml</code> and a dashboard — per-story BCP and
+        BCP/hr velocity. bigspec <b style="color:var(--ink)">keeps BCP as the headline</b> and adds a thin
+        quality ledger written <em>per cycle</em>, so two different questions both get real answers:
+        <b style="color:var(--ink)">"how much effort is left?"</b> and <b style="color:var(--ink)">"is it
+        actually done?"</b></p>
+    </div>
+
+    <!-- BCP burn-down (illustrative shape) -->
+    <div class="card" style="padding:24px 26px;margin-bottom:22px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+        <span style="font-family:var(--font-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)">◆ BCP burn-down — effort remaining</span>
+        <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--ink-3)">illustrative shape · real receipts published from M1</span>
+      </div>
+      <svg viewBox="0 0 620 190" style="width:100%;height:auto" role="img" aria-label="Illustrative BCP burn-down from M1 to v1.0">
+        <!-- axes -->
+        <line x1="52" y1="20" x2="52" y2="152" stroke="#2e394d" stroke-width="1"/>
+        <line x1="52" y1="152" x2="600" y2="152" stroke="#2e394d" stroke-width="1"/>
+        <!-- y labels -->
+        <text x="44" y="26" text-anchor="end" fill="#6b788f" font-family="monospace" font-size="10">BCP</text>
+        <text x="44" y="156" text-anchor="end" fill="#6b788f" font-family="monospace" font-size="10">0</text>
+        <!-- ideal line (dashed) -->
+        <line x1="70" y1="28" x2="560" y2="150" stroke="#45c8e0" stroke-width="1.5" stroke-dasharray="5 5" opacity=".55"/>
+        <text x="150" y="52" fill="#45c8e0" font-family="monospace" font-size="10" opacity=".8">ideal</text>
+        <!-- actual burn-down -->
+        <polyline points="70,28 190,62 320,74 450,116 560,150" fill="none" stroke="#f5a623" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <g fill="#f5a623">
+          <circle cx="70" cy="28" r="4"/><circle cx="190" cy="62" r="4"/><circle cx="320" cy="74" r="4"/>
+          <circle cx="450" cy="116" r="4"/><circle cx="560" cy="150" r="4.5"/>
+        </g>
+        <text x="470" y="104" fill="#f5a623" font-family="monospace" font-size="10">actual</text>
+        <!-- x milestone labels -->
+        <g fill="#6b788f" font-family="monospace" font-size="10" text-anchor="middle">
+          <text x="70" y="170">M1</text><text x="190" y="170">M2</text><text x="320" y="170">M3</text>
+          <text x="450" y="170">M4</text><text x="560" y="170" fill="#4bd08b">v1.0</text>
+        </g>
+      </svg>
+      <p style="font-size:.85rem;color:var(--ink-2);margin-top:10px">Sum the open stories' BCP → <b style="color:var(--ink)">effort still to build</b>.
+        BCP-size a candidate epic <b style="color:var(--ink)">before</b> committing to it. Every count is gated on
+        <code>calibration_id</code>, never the number — and velocity series are segmented by it, because a chart
+        mixing calibrations is a silent lie.</p>
+    </div>
+
+    <!-- telemetry ledger -->
+    <div style="font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 2px 12px">
+      written per cycle → <code>specs/cockpit/ledger.yaml</code>
+    </div>
+    <div class="grid" style="gap:10px">
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px;border-color:var(--amber)">
+        <div><b style="color:var(--amber-2)">BCP — remaining / per-epic</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">Size of software still to build; size of a candidate epic.</div></div>
+        <span class="chip" style="background:rgba(245,166,35,.14);border-color:var(--amber);color:var(--amber)">primary</span>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px">
+        <div><b style="color:var(--ink)">assertions failing → passing</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">Acceptance checks flipped green by real verify runs — not self-report.</div></div>
+        <span class="chip" style="background:rgba(75,208,139,.14);color:var(--green);border-color:transparent">done-ness</span>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px">
+        <div><b style="color:var(--ink)">first-pass gate rate</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">% of gates passed without rework.</div></div>
+        <span class="chip" style="background:rgba(69,200,224,.12);color:var(--cyan);border-color:transparent">quality</span>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px">
+        <div><b style="color:var(--ink)">context cost</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">Tokens to complete a cycle, from PreToolUse accounting.</div></div>
+        <span class="chip" style="background:rgba(69,200,224,.12);color:var(--cyan);border-color:transparent">efficiency</span>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px">
+        <div><b style="color:var(--ink)">with / without-skill Δ</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">Eval pass@k + token delta per skill — proves each skill earns its place.</div></div>
+        <span class="chip" style="background:rgba(155,140,255,.16);color:var(--violet);border-color:transparent">eval</span>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px">
+        <div><b style="color:var(--ink)">risk tier · P0–P3</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">Set in PLAN — picks the fast lane vs the full lane.</div></div>
+        <span class="chip" style="background:rgba(245,166,35,.12);color:var(--amber);border-color:transparent">routing</span>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:16px 20px;opacity:.82">
+        <div><b style="color:var(--ink)">BCP / hr velocity</b><div style="font-size:.85rem;color:var(--ink-2);margin-top:2px">Kept if you find it useful — never a required ceremony.</div></div>
+        <span class="chip" style="border-color:var(--line-2);color:var(--ink-3)">optional</span>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:.9rem;color:var(--ink-3);margin-top:20px">
+      BCP answers the roadmap. The rest answers <b style="color:var(--ink-2)">whether the work is actually
+      done and whether the skills are helping</b> — which BCP alone never claimed to.</p>
+  </div>
+</section>
+
+<!-- ============ PRODUCT ============ -->
+<section id="product">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">What you get at the end</span>
+      <h2>Two things ship. They never entangle again.</h2>
+      <p>bigpowers conflated the methodology's own source with the artifact it drops into your project.
+        bigspec separates them cleanly from the first commit.</p>
+    </div>
+    <div class="grid product">
+      <div class="card deliverable"><div class="k">Deliverable 1</div><h3>The plugin</h3>
+        <p>Kernel + ~29 core skills, installed once, globally. Authored in the portable Agent Skill format — no bespoke sync pipeline. Ships on a marketplace.</p>
+        <pre><span class="c"># install once, use everywhere</span>
+<span class="p">bigspec</span> install</pre></div>
+      <div class="card deliverable"><div class="k">Deliverable 2</div><h3>The scaffold</h3>
+        <p>Per-project spec + cockpit templates, seeded into a project on init. Plain files: constitution template, empty cockpit, spec templates, agent config.</p>
+        <pre><span class="c"># seed a new project</span>
+<span class="p">bigspec</span> init</pre></div>
+    </div>
+    <p class="outcome-line">The end state: <b>the loop builds a real project cold, on plain files,</b>
+      and the evals prove each skill earns its place. A methodology that doesn't just have opinions — it has receipts.</p>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta">
+  <div class="wrap">
+    <span class="eyebrow">Watch it get built</span>
+    <h2 style="margin:12px 0 8px">Live during construction.</h2>
+    <p style="max-width:560px;margin:0 auto 26px">This page is the blueprint. Follow along as bigspec
+      dogfoods its own loop from M0 to v1.0.</p>
+    <a class="btn primary" href="https://github.com/danielvm-git/bigpowers">See the lineage — bigpowers ↗</a>
+    <a class="btn" href="#blocks">Re-read the 11 blocks</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b style="color:var(--ink)">bigspec</b> — spec-driven agentic methodology for solo developers.
+      Status: M0 bootstrap · design pack complete.</p>
+    <p style="margin-top:8px">Grounded in <code>constitution.md</code> (B0–B10) and
+      <code>docs/architecture.md</code>. Provenance: reborn from bigpowers, 2026-07-04.</p>
+  </div>
+</footer>
+
+</body>
+</html>

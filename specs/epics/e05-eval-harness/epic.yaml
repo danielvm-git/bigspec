@@ -1,0 +1,33 @@
+okf_kind: epic
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+---
+id: e05
+title: Eval Harness
+milestone: M1
+wsjf: 4.6
+total_bcps: 5
+calibration_id: bcp-plus-v1
+risk_tier: P2
+depends_on: [e04]
+status: todo
+goal: >
+  The Capstone proof surface: a with/without-skill delta runner (pass@k + token
+  cost) plus golden fixtures per OKF kind. This is what replaces the legacy 94%
+  self-compliance gate — proof is task success, not principle conformance.
+stories:
+  - id: e05s01
+    title: with/without-skill delta runner
+    bcps: 3
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "runs a task with and without a given skill; reports pass@k + token delta; a skill with a non-positive delta is flagged."
+  - id: e05s02
+    title: golden fixtures per OKF kind
+    bcps: 2
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "one deterministic fixture per OKF kind; validate-okf round-trips each without data loss."

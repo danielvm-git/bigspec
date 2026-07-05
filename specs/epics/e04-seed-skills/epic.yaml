@@ -1,0 +1,55 @@
+okf_kind: epic
+okf_version: "1.0"
+generated_by: "human"
+generated_at: 2026-07-04T22:42:29Z
+---
+id: e04
+title: Seed Skills (5)
+milestone: M0
+wsjf: 2.8
+total_bcps: 9
+calibration_id: bcp-plus-v1
+risk_tier: P1
+depends_on: [e03]
+status: todo
+goal: >
+  The five hand-written bootstrap skills that make the fractal loop runnable
+  end-to-end by hand. Each authored in native Agent Skill format with
+  effort/spawn/risk/movement and a behavioral verify:. Explicitly provisional
+  (architecture §10 bootstrap paradox) — re-derived under eval in M2.
+stories:
+  - id: e04s01
+    title: survey-context (frame)
+    bcps: 1
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "reads cockpit state, detects current movement, writes handoff.next_skill."
+  - id: e04s02
+    title: elaborate-spec (specify)
+    bcps: 2
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "emits a valid okf_kind:story bundle (okf-spine §3) from intent."
+  - id: e04s03
+    title: plan-work (plan)
+    bcps: 2
+    risk_tier: P2
+    status: todo
+    elaborated: false
+    acceptance: "emits a valid okf_kind:tasks ledger with FAILING checkpoints + a P0-P3 tier."
+  - id: e04s04
+    title: develop-tdd (build)
+    bcps: 2
+    risk_tier: P1
+    status: todo
+    elaborated: false
+    acceptance: "drives a checkpoint FAILING -> PASSING via RED-GREEN-REFACTOR."
+  - id: e04s05
+    title: verify-work (prove)
+    bcps: 2
+    risk_tier: P1
+    status: todo
+    elaborated: false
+    acceptance: "emits a verification-report / gate pass scoped to the story's risk tier."
