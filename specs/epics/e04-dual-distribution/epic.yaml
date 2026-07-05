@@ -1,0 +1,12 @@
+id: e04
+title: Dual-Mode Distribution
+wsjf: 4.0
+total_bcps: 8
+status: todo
+stories:
+- id: e04s01
+  title: Standalone Binaries
+  bcps: 8
+  status: todo
+  spec: e04s01-binaries.md
+  tasks: e04s01-tasks.yaml

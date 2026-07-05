@@ -1,0 +1,9 @@
+story_id: e04s01
+title: Standalone Binaries
+status: todo
+bcps: 8
+tasks:
+- id: 1
+  description: Add binary compilation steps
+  verify: ls dist/bigspec-*
+  status: todo

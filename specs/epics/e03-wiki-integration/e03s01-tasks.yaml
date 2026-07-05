@@ -1,0 +1,9 @@
+story_id: e03s01
+title: Wiki Publish Tool
+status: todo
+bcps: 5
+tasks:
+- id: 1
+  description: Implement publish-to-wiki tool
+  verify: node ./kernel/publish-to-wiki.js --help
+  status: todo

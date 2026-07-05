@@ -1,0 +1,12 @@
+id: e02
+title: GitHub Pages Setup
+wsjf: 8.0
+total_bcps: 3
+status: todo
+stories:
+- id: e02s01
+  title: Site Deployment
+  bcps: 3
+  status: todo
+  spec: e02s01-site.md
+  tasks: e02s01-tasks.yaml

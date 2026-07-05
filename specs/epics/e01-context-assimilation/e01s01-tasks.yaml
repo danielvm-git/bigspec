@@ -1,0 +1,21 @@
+story_id: e01s01
+title: Knowledge Acquisition
+status: todo
+bcps: 8
+tasks:
+- id: 1
+  description: Read all articles mentioned in bigpowers README
+  verify: echo 'Articles read'
+  status: todo
+- id: 2
+  description: Read all files on the bigpowers repository
+  verify: echo 'Bigpowers repo read'
+  status: todo
+- id: 3
+  description: Read all books mentioned
+  verify: echo 'Books read'
+  status: todo
+- id: 4
+  description: Read all content of the bigspec repository
+  verify: echo 'Bigspec repo read'
+  status: todo

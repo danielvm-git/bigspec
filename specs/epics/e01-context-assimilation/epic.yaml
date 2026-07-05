@@ -1,0 +1,12 @@
+id: e01
+title: Context Assimilation
+wsjf: 9.0
+total_bcps: 8
+status: todo
+stories:
+- id: e01s01
+  title: Knowledge Acquisition
+  bcps: 8
+  status: todo
+  spec: e01s01-knowledge.md
+  tasks: e01s01-tasks.yaml

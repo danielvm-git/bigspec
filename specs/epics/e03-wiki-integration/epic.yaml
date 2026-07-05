@@ -1,0 +1,12 @@
+id: e03
+title: Wiki Integration
+wsjf: 5.0
+total_bcps: 5
+status: todo
+stories:
+- id: e03s01
+  title: Wiki Publish Tool
+  bcps: 5
+  status: todo
+  spec: e03s01-wiki.md
+  tasks: e03s01-tasks.yaml
