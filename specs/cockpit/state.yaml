@@ -4,12 +4,19 @@ okf_version: "1.0"
 generated_by: "human"
 generated_at: 2026-07-05T20:45:00Z
 ---
+active_flow: build_epic
 active_epic: "specs/epics/e03-kernel/"
-active_story: ""
-current_movement: "SUSTAIN"
+active_story: "e03s01"
+current_movement: "BUILD"
+epic_cycle:
+  step: 8
+  fast_mode: false
+  story_bcps: 3
+  audit_result: "pass"
 handoff:
-  next_skill: "none"
-  reason: "All 40 files under specs/ pass OKF envelope validation with 0 errors, 0 warnings. All 3 GitHub Actions workflows green (CI, Release, Pages). validate-okf now has 11 valid kinds (story, epic, glossary, tasks, cockpit-state, adr, reference, release-plan, execution-status, scope, plan-audit, readme) and robust quote-stripping in frontmatter parser."
+  next_skill: "release-branch"
+  reason: "e03 build-epic close-out complete: security-review (step 0), survey-context (1), plan-work (2), verify-work (5), audit-code (6), commit-message (7). e03s01 and e03s03 marked done in execution-status. Ready for step 8 close-out."
+  last_step_completed: "audit-code passed — all sections PASS; verification evidence + threat model persisted under specs/security/ and specs/verifications/"
   last_step_completed: "Fixed all 32 remaining OKF frontmatter warnings: 7 files missing opening '---' delimiter, 25 files with no frontmatter at all. All 3 workflows green on commit 9fc3ae3."
   open_decisions:
     - "e03s02/e03s03 and all e04/e05 stories await just-in-time SPECIFY on entry (elaborated: false in their manifests)"

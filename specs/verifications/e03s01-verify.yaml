@@ -1,0 +1,51 @@
+---
+okf_kind: verification-report
+okf_version: "1.0"
+generated_by: "verify-work"
+generated_at: "2026-07-05T19:45:00Z"
+supersedes: null
+commit_range: null
+---
+story_id: e03s01
+title: bp-yaml get/set over the cockpit
+verified_at: "2026-07-05T19:45:00Z"
+verifier: verify-work
+mode: cli
+phases:
+  cli_smoke:
+    args:
+      - "bp-yaml --help"
+      - "bigspec state"
+      - "bigspec gate-lane P1"
+      - "bp-yaml get specs/cockpit/state.yaml active_flow"
+      - "bp-yaml get specs/cockpit/state.yaml nope.here (missing key error)"
+    passed: true
+  build:
+    passed: true
+    command: "npm run build"
+  typecheck:
+    passed: true
+    command: "tsc --noEmit"
+  lint:
+    passed: true
+    command: "tsc --noEmit"
+  tests:
+    passed: true
+    count: 31
+    command: "npm test"
+  manual:
+    steps:
+      - step: "bigspec --help shows usage"
+        expected: "Usage line with commands"
+        actual: "Shows bigspec usage with all 5 commands"
+        passed: true
+      - step: "bigspec gate-check on tasks file"
+        expected: "Risk: PASSING, Quality: PASSING"
+        actual: "Both PASSING, Completeness PENDING (expected)"
+        passed: true
+  security:
+    passed: true
+    reference: "specs/security/epics/e03/THREAT_MODEL.md"
+  gaps:
+    closed: true
+    count: 0

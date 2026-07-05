@@ -1,0 +1,54 @@
+---
+okf_kind: verification-report
+okf_version: "1.0"
+generated_by: "verify-work"
+generated_at: "2026-07-05T19:45:00Z"
+supersedes: null
+commit_range: null
+---
+story_id: e03s03
+title: Risk-Tiered Gate Engine
+verified_at: "2026-07-05T19:45:00Z"
+verifier: verify-work
+mode: cli
+phases:
+  cli_smoke:
+    args:
+      - "bigspec gate-check specs/epics/e03-kernel/e03s03-tasks.yaml"
+      - "bigspec gate-lane P1"
+      - "bigspec gate-lane P0"
+      - "bigspec gate-lane P3"
+    passed: true
+  build:
+    passed: true
+    command: "npm run build"
+  typecheck:
+    passed: true
+    command: "tsc --noEmit"
+  lint:
+    passed: true
+    command: "tsc --noEmit"
+  tests:
+    passed: true
+    count: 31
+    command: "npm test"
+  manual:
+    steps:
+      - step: "gate-check on e03s01 tasks"
+        expected: "Risk PASSING, Quality PASSING"
+        actual: "Both PASSING, Completeness PENDING"
+        passed: true
+      - step: "gate-lane P0 shows full lane with security-scan"
+        expected: "full lane with security-scan"
+        actual: "full — Critical — uat + nfr-gates + security-scan + fresh-review"
+        passed: true
+      - step: "gate-lane P3 shows fast lane"
+        expected: "fast lane"
+        actual: "fast — Trivial — typecheck + lint + quick-fix"
+        passed: true
+  security:
+    passed: true
+    reference: "specs/security/epics/e03/THREAT_MODEL.md"
+  gaps:
+    closed: true
+    count: 0

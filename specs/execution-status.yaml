@@ -7,10 +7,10 @@ generated_at: "2026-07-04T00:00:00Z"
 # Execution order is dependency-layered by milestone (see release-plan.yaml).
 # M0: e03, e04, e02s00 (wiki bootstrap, ADR-0006) · M1: e05 · M3: e01, e02s01-03
 e02s00: todo
-e03: todo
-e03s01: todo
+e03: building
+e03s01: done
 e03s02: todo
-e03s03: todo
+e03s03: done
 e04: todo
 e04s01: todo
 e04s02: todo
