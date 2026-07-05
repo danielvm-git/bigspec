@@ -1,4 +1,8 @@
 ---
+okf_kind: adr
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-04T00:00:00Z"
 title: "ADR 0005: Anti-Drift & Repo-Hygiene Gates"
 date: "2026-07-04"
 status: "proposed"

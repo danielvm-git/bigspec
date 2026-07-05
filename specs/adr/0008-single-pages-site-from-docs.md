@@ -1,4 +1,8 @@
 ---
+okf_kind: adr
+okf_version: "1.0"
+generated_by: "human"
+generated_at: "2026-07-05T00:00:00Z"
 title: "ADR 0008: Single GitHub Pages Site from docs/; Wiki Retired"
 date: "2026-07-05"
 status: "accepted"

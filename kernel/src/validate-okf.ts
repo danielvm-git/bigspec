@@ -32,6 +32,7 @@ const VALID_KINDS = new Set([
   "glossary",
   "tasks",
   "cockpit-state",
+  "adr",
 ]);
 
 interface ValidationIssue {
@@ -58,7 +59,14 @@ function parseFrontmatter(raw: string): Envelope | null {
   const fields: Record<string, string> = {};
   for (const line of block.split("\n")) {
     const kv = line.match(/^(\w[\w-]*):\s*(.*)/);
-    if (kv) fields[kv[1]] = kv[2].trim();
+    if (kv) {
+      let val = kv[2].trim();
+      // Strip surrounding matching quotes for robust frontmatter parsing
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      fields[kv[1]] = val;
+    }
   }
 
   return { raw: block, fields, bodyStart: match[0].length };
