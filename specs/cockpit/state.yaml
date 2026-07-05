@@ -2,15 +2,15 @@
 okf_kind: cockpit-state
 okf_version: "1.0"
 generated_by: "human"
-generated_at: 2026-07-05T20:40:00Z
+generated_at: 2026-07-05T20:45:00Z
 ---
 active_epic: "specs/epics/e03-kernel/"
 active_story: ""
 current_movement: "SUSTAIN"
 handoff:
   next_skill: "none"
-  reason: "All 3 GitHub Actions workflows now green. Fixes: (1) added OKF frontmatter to 5 ADR files that were missing required okf_kind/okf_version/generated_by/generated_at fields, causing validate-okf to exit 1 and CI to fail; (2) added 'adr' to VALID_KINDS set in validate-okf.ts; (3) fixed frontmatter parser to strip surrounding quotes for robust generated_at validation; (4) removed @semantic-release/npm from .releaserc since no NPM_TOKEN secret is configured — this methodology repo doesn't need npm publishing yet."
-  last_step_completed: "CI+Release failures fixed: all workflows green on commit a3fa9c7"
+  reason: "All 40 files under specs/ pass OKF envelope validation with 0 errors, 0 warnings. All 3 GitHub Actions workflows green (CI, Release, Pages). validate-okf now has 11 valid kinds (story, epic, glossary, tasks, cockpit-state, adr, reference, release-plan, execution-status, scope, plan-audit, readme) and robust quote-stripping in frontmatter parser."
+  last_step_completed: "Fixed all 32 remaining OKF frontmatter warnings: 7 files missing opening '---' delimiter, 25 files with no frontmatter at all. All 3 workflows green on commit 9fc3ae3."
   open_decisions:
     - "e03s02/e03s03 and all e04/e05 stories await just-in-time SPECIFY on entry (elaborated: false in their manifests)"
     - "1.0.0 showcase epic (e06) to be FRAMED at M4 per architecture §8"
