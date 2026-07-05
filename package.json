@@ -4,16 +4,30 @@
   "description": "Spec-driven agentic methodology — constitution, OKF artifacts, fractal loop, native BCP",
   "type": "module",
   "bin": {
-    "bigspec": "./kernel/dist/cli.js"
+    "bigspec": "./kernel/dist/src/cli.js",
+    "bp-yaml": "./kernel/dist/src/bp-yaml-cli.js"
   },
   "scripts": {
     "test": "vitest run",
     "lint": "tsc --noEmit",
     "validate-okf": "node kernel/dist/validate-okf.js"
   },
-  "keywords": ["sdd", "agent-skills", "spec-driven", "ai-agents"],
+  "keywords": [
+    "sdd",
+    "agent-skills",
+    "spec-driven",
+    "ai-agents"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  },
+  "dependencies": {
+    "yaml": "^2.9.0"
   }
 }
