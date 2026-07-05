@@ -1,0 +1,48 @@
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "verify"
+generated_at: 2026-07-05T16:32:00Z
+---
+# Execution Ledger for: Risk-Tiered Gate Engine (e03s03)
+# Risk tier: P1 (full lane).
+
+story: e03s03
+risk_tier: P1
+verify_suite: "npm test"
+
+checkpoints:
+  - id: chk-01
+    intent: "parseTasks reads OKF tasks bundles — validates risk_tier, checkpoints, gates"
+    verify_cmd: "npm test -- -t 'parseTasks'"
+    status: PASSING
+  - id: chk-02
+    intent: "evaluateCheckpoint shells out to verify_cmd and reports pass/fail"
+    verify_cmd: "npm test -- -t 'evaluateCheckpoint'"
+    status: PASSING
+  - id: chk-03
+    intent: "evaluateGates checks Risk, Quality, Completeness, Confirm gates against ledger state"
+    verify_cmd: "npm test -- -t 'evaluateGates'"
+    status: PASSING
+  - id: chk-04
+    intent: "getLane maps P0-P3 to correct verification lanes (full/full-light/fast)"
+    verify_cmd: "npm test -- -t 'getLane'"
+    status: PASSING
+  - id: chk-05
+    intent: "gateCheck produces full report; formatReport renders human-readable output"
+    verify_cmd: "npm test -- -t 'gateCheck'"
+    status: PASSING
+  - id: chk-06
+    intent: "CLI gate-check and gate-lane subcommands work from the bigspec CLI"
+    verify_cmd: "npm test -- -t 'gateCheck'"
+    status: PASSING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING
+  - type: Quality
+    blocks_until: "all 6 checkpoints PASSING + lint clean (tsc --noEmit)"
+    state: PASSING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING

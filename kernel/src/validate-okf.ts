@@ -1,0 +1,199 @@
+#!/usr/bin/env node
+/**
+ * validate-okf — M0 OKF envelope validator.
+ *
+ * Scans `specs/` for .yaml/.md files with OKF frontmatter and validates:
+ *   1. The universal envelope structure (required fields present, types OK)
+ *   2. Known `okf_kind` values against the M0 spine (6 core kinds)
+ *
+ * Output: a human-readable report. Exit 0 on clean, exit 1 on any ERROR.
+ *
+ * Constitution: B8 (Self-Describing Artifacts) — gates on structure and
+ * provenance, never on a value.
+ * Full kind-aware dispatch (e03s02, Known-8) extends from this M0 stub.
+ */
+
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join, extname } from "node:path";
+
+// ---------------------------------------------------------------------------
+// M0 OKF envelope contract (docs/okf-spine.md §1)
+// ---------------------------------------------------------------------------
+const REQUIRED_FRONTMATTER = [
+  "okf_kind",
+  "okf_version",
+  "generated_by",
+  "generated_at",
+];
+
+const VALID_KINDS = new Set([
+  "story",
+  "epic",
+  "glossary",
+  "tasks",
+  "cockpit-state",
+]);
+
+interface ValidationIssue {
+  file: string;
+  kind: string;
+  field?: string;
+  detail: string;
+}
+
+interface Envelope {
+  raw: string;
+  fields: Record<string, string>;
+  bodyStart: number;
+}
+
+// ---------------------------------------------------------------------------
+// Parse frontmatter from a raw string
+// ---------------------------------------------------------------------------
+function parseFrontmatter(raw: string): Envelope | null {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (!match) return null;
+
+  const block = match[1];
+  const fields: Record<string, string> = {};
+  for (const line of block.split("\n")) {
+    const kv = line.match(/^(\w[\w-]*):\s*(.*)/);
+    if (kv) fields[kv[1]] = kv[2].trim();
+  }
+
+  return { raw: block, fields, bodyStart: match[0].length };
+}
+
+// ---------------------------------------------------------------------------
+// Collect all supported files under a directory
+// ---------------------------------------------------------------------------
+function collectFiles(root: string): string[] {
+  const results: string[] = [];
+  const supportedExts = new Set([".md", ".yaml", ".yml"]);
+
+  function walk(dir: string): void {
+    const entries = readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(fullPath);
+      } else if (supportedExts.has(extname(entry.name))) {
+        results.push(fullPath);
+      }
+    }
+  }
+
+  walk(root);
+  return results;
+}
+
+// ---------------------------------------------------------------------------
+// Validate a single file
+// ---------------------------------------------------------------------------
+function validateFile(filePath: string): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  let raw: string;
+  try {
+    raw = readFileSync(filePath, "utf-8");
+  } catch (e: any) {
+    issues.push({ file: filePath, kind: "ERROR", detail: `cannot read: ${e.message}` });
+    return issues;
+  }
+
+  // Empty files — skip
+  if (raw.trim().length === 0) return issues;
+
+  const envelope = parseFrontmatter(raw);
+  if (!envelope) {
+    issues.push({
+      file: filePath, kind: "WARNING",
+      detail: "no OKF frontmatter found (missing --- block)",
+    });
+    return issues;
+  }
+
+  // Required fields
+  for (const field of REQUIRED_FRONTMATTER) {
+    if (!(field in envelope.fields)) {
+      issues.push({
+        file: filePath, kind: "ERROR", field,
+        detail: `missing required field "${field}"`,
+      });
+    }
+  }
+
+  // okf_version check
+  if (envelope.fields.okf_version) {
+    if (envelope.fields.okf_version !== '"1.0"' && envelope.fields.okf_version !== "1.0") {
+      issues.push({
+        file: filePath, kind: "WARNING", field: "okf_version",
+        detail: `expected "1.0", got ${envelope.fields.okf_version}`,
+      });
+    }
+  }
+
+  // okf_kind check
+  if (envelope.fields.okf_kind && !VALID_KINDS.has(envelope.fields.okf_kind)) {
+    issues.push({
+      file: filePath, kind: "WARNING", field: "okf_kind",
+      detail: `unknown kind "${envelope.fields.okf_kind}" — expected one of: ${[...VALID_KINDS].join(", ")}`,
+    });
+  }
+
+  // generated_at: basic ISO 8601 check
+  if (envelope.fields.generated_at) {
+    const dt = envelope.fields.generated_at;
+    if (!/^\d{4}-\d{2}-\d{2}/.test(dt)) {
+      issues.push({
+        file: filePath, kind: "WARNING", field: "generated_at",
+        detail: `not a valid ISO 8601 date: "${dt}"`,
+      });
+    }
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------------------
+// Main validation entry point
+// ---------------------------------------------------------------------------
+export function validate(root: string = "specs"): string {
+  const files = collectFiles(root);
+  const allIssues: ValidationIssue[] = [];
+
+  for (const file of files) {
+    allIssues.push(...validateFile(file));
+  }
+
+  // Aggregate
+  const errors = allIssues.filter((i) => i.kind === "ERROR");
+  const warnings = allIssues.filter((i) => i.kind === "WARNING");
+
+  const lines: string[] = [];
+  lines.push(`OKF Validation Report — ${files.length} file(s) scanned`);
+  lines.push(`  Errors:   ${errors.length}`);
+  lines.push(`  Warnings: ${warnings.length}`);
+  lines.push("");
+
+  if (allIssues.length === 0) {
+    lines.push("✓ All files pass OKF envelope validation.");
+    return lines.join("\n");
+  }
+
+  for (const issue of allIssues) {
+    const loc = issue.field ? `${issue.file}:${issue.field}` : issue.file;
+    lines.push(`  [${issue.kind}] ${loc}`);
+    lines.push(`         ${issue.detail}`);
+  }
+
+  return lines.join("\n");
+}
+
+// ---------------------------------------------------------------------------
+// CLI entry point (invoked via `node kernel/dist/src/validate-okf.js`)
+// ---------------------------------------------------------------------------
+if (process.argv[1]?.includes("validate-okf")) {
+  const report = validate();
+  console.log(report);
+  if (report.includes("ERROR")) process.exit(1);
+}
