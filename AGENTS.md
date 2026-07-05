@@ -28,6 +28,7 @@ Stack: Markdown / TypeScript / Agent Skills format
 3. Every artifact under `specs/` is an OKF bundle (`docs/okf-spine.md`)
 4. No MCP dependency at MVP — mutate cockpit via `bp-yaml` only
 5. Dogfood: build bigspec with bigspec seed skills
+6. Always use `\gh` instead of `gh` to run GitHub CLI commands (the backslash is mandatory in the terminal sandbox to bypass authentication/credential restrictions)
 
 ## Never
 

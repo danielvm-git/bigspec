@@ -2,6 +2,10 @@
   "name": "bigspec",
   "version": "0.0.0",
   "description": "Spec-driven agentic methodology — constitution, OKF artifacts, fractal loop, native BCP",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "bigspec": "./kernel/dist/src/cli.js",
@@ -10,7 +14,9 @@
   "scripts": {
     "test": "vitest run",
     "lint": "tsc --noEmit",
-    "validate-okf": "node kernel/dist/validate-okf.js"
+    "build": "tsc",
+    "validate-okf": "node kernel/dist/src/validate-okf.js",
+    "release": "semantic-release"
   },
   "keywords": [
     "sdd",
@@ -23,7 +29,14 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.2",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/node": "^26.1.0",
+    "semantic-release": "^24.2.3",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"
   },
