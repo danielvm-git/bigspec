@@ -12,7 +12,7 @@ total_bcps: 14
 calibration_id: bcp-plus-v1
 risk_tier: P1
 depends_on: []
-status: todo
+status: built
 goal: >
   The file-based kernel that lets the loop run on plain files with no server:
   bp-yaml (cockpit get/set), validate-okf (kind-aware validator), and one
@@ -31,7 +31,7 @@ stories:
     title: validate-okf kind-aware validator (11 kinds + envelope)
     bcps: 8                     # KNOWN-8 calibration anchor (B9 / ADR-0003)
     risk_tier: P1
-    status: building
+    status: built
     elaborated: true
     spec: e03s02-validate-okf.md
     tasks: e03s02-tasks.yaml

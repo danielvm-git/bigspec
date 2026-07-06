@@ -1,0 +1,51 @@
+---
+okf_kind: verification-report
+okf_version: "1.0"
+generated_by: "verify-work"
+generated_at: "2026-07-06T08:41:00Z"
+---
+story_id: e03s02
+title: validate-okf kind-aware validator
+verified_at: "2026-07-06T08:41:00Z"
+verifier: verify-work
+mode: cli
+branch: e03s02-validate-okf
+phases:
+  cli_smoke:
+    args:
+      - "bigspec validate-okf"
+      - "bigspec gate-check specs/epics/e03-kernel/e03s02-tasks.yaml"
+    passed: true
+  build:
+    passed: true
+    command: "npm run build (tsc)"
+  typecheck:
+    passed: true
+    command: "tsc --noEmit"
+  lint:
+    passed: true
+    command: "tsc --noEmit"
+  tests:
+    passed: true
+    count: 51
+    command: "npm test"
+    files:
+      - "kernel/src/bp-yaml.test.ts (8)"
+      - "kernel/src/gate-engine.test.ts (22)"
+      - "kernel/src/validate-okf.test.ts (20)"
+  manual:
+    steps:
+      - step: "bigspec validate-okf on specs/"
+        expected: "0 errors, exit 0"
+        actual: "0 errors, 16 legacy warnings, exit 0"
+        passed: true
+      - step: "bigspec gate-check on e03s02 tasks"
+        expected: "Risk PASSING, Quality PASSING"
+        actual: "Both PASSING, Completeness PENDING"
+        passed: true
+  security:
+    passed: true
+    reference: "specs/security/epics/e03/THREAT_MODEL.md"
+  gaps:
+    closed: true
+    count: 0

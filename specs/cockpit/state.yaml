@@ -6,25 +6,21 @@ generated_at: 2026-07-05T20:45:00Z
 ---
 active_flow: build_epic
 active_epic: "specs/epics/e03-kernel/"
-active_story: "e03s02"
-current_movement: "BUILD"
+active_story: ""
+current_movement: "SUSTAIN"
 epic_cycle:
-  step: 0
-  fast_mode: false
-  story_bcps: 8
-  audit_result: "pending"
+  completed: true
 handoff:
-  next_skill: "security-review"
-  reason: "Starting build-epic for e03s02 (validate-okf kind-aware validator). Spec elaborated (e03s02-validate-okf.md), tasks written (e03s02-tasks.yaml, 10 FAILING checkpoints). Proceeding with step 0 — security-review."
-  last_step_completed: "elaborated spec + tasks for e03s02"
+  next_skill: "none"
+  reason: "e03 (Kernel Foundation) fully complete: all 3 stories built, verified, audited, and merged. Next step: start e04-seed-skills (next M0 epic, depends on e03 kernel) or frame the showcase epic (e06) at M4."
+  last_step_completed: "e03s02 merged to main (4d262c8) — kind-aware validation with 51 tests; branch deleted"
   open_decisions:
     - "e04-seed-skills is next in M0 queue (depends on e03)"
     - "1.0.0 showcase epic (e06) to be FRAMED at M4 per architecture §8"
     - "NPM_TOKEN secret not set; @semantic-release/npm removed from .releaserc"
-    - "e03s02 is the remaining M0-Kernel story: add kind-aware validation rules + tests"
+    - "e03s02 (validate-okf) completed — legacy epic capsules (e01/e02 old structs) still generate 16 kind warnings"
   context_pointers:
     - "constitution.md"
     - "specs/release-plan.yaml"
     - "specs/execution-status.yaml"
-    - "specs/security/epics/e03/THREAT_MODEL.md"
     - "specs/verifications/"
