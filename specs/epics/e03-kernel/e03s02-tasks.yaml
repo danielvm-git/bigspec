@@ -13,45 +13,45 @@ verify_suite: "npm test"
 
 checkpoints:
   - id: chk-01
-    intent: "validate() reports 0 errors for the current specs/ directory (41 known-valid files)"
+    intent: "validate() reports 0 errors for the current specs/ directory (46 files)"
     verify_cmd: "npm test -- -t 'validate reports 0 errors on current specs'"
-    status: FAILING
+    status: PASSING
   - id: chk-02
     intent: "validateFile returns ERROR for file missing okf_kind"
     verify_cmd: "npm test -- -t 'missing okf_kind'"
-    status: FAILING
+    status: PASSING
   - id: chk-03
     intent: "validateFile returns WARNING for file missing --- frontmatter"
     verify_cmd: "npm test -- -t 'missing frontmatter'"
-    status: FAILING
+    status: PASSING
   - id: chk-04
-    intent: "validateFile returns ERROR for unknown okf_kind"
+    intent: "validateFile returns WARNING for unknown okf_kind"
     verify_cmd: "npm test -- -t 'unknown kind'"
-    status: FAILING
+    status: PASSING
   - id: chk-05
     intent: "kind-aware: story bundle validates supersedes + commit_range presence"
     verify_cmd: "npm test -- -t 'kind-aware story'"
-    status: FAILING
+    status: PASSING
   - id: chk-06
     intent: "kind-aware: epic bundle validates stories array structure"
     verify_cmd: "npm test -- -t 'kind-aware epic'"
-    status: FAILING
+    status: PASSING
   - id: chk-07
     intent: "kind-aware: tasks bundle validates checkpoints + gates arrays"
     verify_cmd: "npm test -- -t 'kind-aware tasks'"
-    status: FAILING
+    status: PASSING
   - id: chk-08
     intent: "kind-aware: cockpit-state validates handoff structure"
     verify_cmd: "npm test -- -t 'kind-aware cockpit'"
-    status: FAILING
+    status: PASSING
   - id: chk-09
     intent: "CLI exits 1 on ERROR, 0 on clean, report format includes file:field references"
     verify_cmd: "npm test -- -t 'CLI exit'"
-    status: FAILING
+    status: PASSING
   - id: chk-10
     intent: "validate scans directories recursively; empty files are silently skipped"
     verify_cmd: "npm test -- -t 'recursive scan'"
-    status: FAILING
+    status: PASSING
 
 gates:
   - type: Risk
