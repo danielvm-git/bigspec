@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/danielvm-git/bigspec/compare/v1.0.1...v1.1.0) (2026-07-06)
+
+
+### Features
+
+* **validate-okf:** add kind-aware per-kind validation with 20 tests ([c60ac73](https://github.com/danielvm-git/bigspec/commit/c60ac7371fdd49f3cb7db00601d63a29a3119d14))
+* **validate-okf:** add kind-aware per-kind validation with test suite ([4d262c8](https://github.com/danielvm-git/bigspec/commit/4d262c8aceeb59a795c90b75abb9a33200908791))
+* **validate-okf:** add verification-report to valid kinds, add first test ([b94fb0c](https://github.com/danielvm-git/bigspec/commit/b94fb0c52f7050e71c8c96ccff06384c94cf893b))
+
 ## [1.0.1](https://github.com/danielvm-git/bigspec/compare/v1.0.0...v1.0.1) (2026-07-05)
 
 
