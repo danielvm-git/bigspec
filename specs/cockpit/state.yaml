@@ -6,38 +6,25 @@ generated_at: 2026-07-05T20:45:00Z
 ---
 active_flow: build_epic
 active_epic: "specs/epics/e03-kernel/"
-active_story: "e03s01"
+active_story: "e03s02"
 current_movement: "BUILD"
 epic_cycle:
-  step: 8
+  step: 0
   fast_mode: false
-  story_bcps: 3
-  audit_result: "pass"
+  story_bcps: 8
+  audit_result: "pending"
 handoff:
-  next_skill: "release-branch"
-  reason: "e03 build-epic close-out complete: security-review (step 0), survey-context (1), plan-work (2), verify-work (5), audit-code (6), commit-message (7). e03s01 and e03s03 marked done in execution-status. Ready for step 8 close-out."
-  last_step_completed: "audit-code passed — all sections PASS; verification evidence + threat model persisted under specs/security/ and specs/verifications/"
-  last_step_completed: "Fixed all 32 remaining OKF frontmatter warnings: 7 files missing opening '---' delimiter, 25 files with no frontmatter at all. All 3 workflows green on commit 9fc3ae3."
+  next_skill: "security-review"
+  reason: "Starting build-epic for e03s02 (validate-okf kind-aware validator). Spec elaborated (e03s02-validate-okf.md), tasks written (e03s02-tasks.yaml, 10 FAILING checkpoints). Proceeding with step 0 — security-review."
+  last_step_completed: "elaborated spec + tasks for e03s02"
   open_decisions:
-    - "e03s02/e03s03 and all e04/e05 stories await just-in-time SPECIFY on entry (elaborated: false in their manifests)"
+    - "e04-seed-skills is next in M0 queue (depends on e03)"
     - "1.0.0 showcase epic (e06) to be FRAMED at M4 per architecture §8"
-    - "e02 split per ADR-0006: e02s00 (thin wiki bootstrap, no kernel dep) moved to M0/0.1.0"
-    - "NPM_TOKEN secret not set; @semantic-release/npm removed from .releaserc to avoid verifyConditions failure; add back when npm publishing is desired"
+    - "NPM_TOKEN secret not set; @semantic-release/npm removed from .releaserc"
+    - "e03s02 is the remaining M0-Kernel story: add kind-aware validation rules + tests"
   context_pointers:
     - "constitution.md"
     - "specs/release-plan.yaml"
-    - ".github/workflows/ci.yml"
-    - ".github/workflows/release.yml"
-    - ".releaserc"
-    - "skills/ (33 ported skills, all with handoff.next_skill)"
-  open_decisions:
-    - "e03s02/e03s03 and all e04/e05 stories await just-in-time SPECIFY on entry (elaborated: false in their manifests)"
-    - "1.0.0 showcase epic (e06) to be FRAMED at M4 per architecture §8"
-    - "e02 split per ADR-0006: e02s00 (thin wiki bootstrap, no kernel dep) moved to M0/0.1.0"
-  context_pointers:
-    - "constitution.md"
-    - "specs/release-plan.yaml"
-    - ".github/workflows/ci.yml"
-    - ".github/workflows/release.yml"
-    - ".releaserc"
-    - "skills/ (33 ported skills, all with handoff.next_skill)"
+    - "specs/execution-status.yaml"
+    - "specs/security/epics/e03/THREAT_MODEL.md"
+    - "specs/verifications/"

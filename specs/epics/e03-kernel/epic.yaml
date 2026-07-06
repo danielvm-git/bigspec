@@ -28,12 +28,14 @@ stories:
     tasks: e03s01-tasks.yaml
     acceptance: "get returns a nested key; set writes it back preserving other keys + frontmatter; missing key errors with path + remediation."
   - id: e03s02
-    title: validate-okf kind-aware validator (6 kinds + envelope)
+    title: validate-okf kind-aware validator (11 kinds + envelope)
     bcps: 8                     # KNOWN-8 calibration anchor (B9 / ADR-0003)
     risk_tier: P1
-    status: todo
-    elaborated: false           # SPECIFY on entry — no forward spec pointer yet
-    acceptance: "envelope + per-kind structure/provenance validated for all 6 OKF kinds; gates on structure, never a value; error names the offending field + expected shape."
+    status: building
+    elaborated: true
+    spec: e03s02-validate-okf.md
+    tasks: e03s02-tasks.yaml
+    acceptance: "envelope + per-kind structure/provenance validated for all 11 OKF kinds; gates on structure, never a value; error names the offending field + expected shape."
   - id: e03s03
     title: one risk-tiered gate engine
     bcps: 3
