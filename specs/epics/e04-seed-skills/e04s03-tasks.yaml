@@ -1,0 +1,41 @@
+---
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "skill:plan-work"
+generated_at: 2026-07-06T13:26:00Z
+---
+# Execution Ledger for: plan-work (plan) (e04s03)
+# Risk tier: P2. Depends on e04s01 skill-lint baseline.
+
+story: e04s03
+risk_tier: P2
+verify_suite: "npm test"
+
+checkpoints:
+  - id: chk-01
+    intent: "skill-lint validates plan-movement skills reference tasks ledger contract"
+    verify_cmd: "npm test -- -t 'plan skills reference tasks contract'"
+    status: FAILING
+  - id: chk-02
+    intent: "plan-work SKILL.md passes full skill-lint"
+    verify_cmd: "npm run skill-lint -- plan-work"
+    status: FAILING
+  - id: chk-03
+    intent: "plan-work documents ambiguity pre-flight gate (grill)"
+    verify_cmd: "npm test -- -t 'plan-work ambiguity gate'"
+    status: FAILING
+  - id: chk-04
+    intent: "plan-work tasks ledger template includes FAILING checkpoints and risk_tier"
+    verify_cmd: "npm test -- -t 'plan-work ledger template'"
+    status: FAILING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING
+  - type: Quality
+    blocks_until: "all checkpoints PASSING + lint clean"
+    state: PENDING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING

@@ -1,0 +1,45 @@
+---
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "skill:plan-work"
+generated_at: 2026-07-06T13:26:00Z
+---
+# Execution Ledger for: verify-work (prove) (e04s05)
+# Risk tier: P1 (full prove lane). Depends on e04s01 skill-lint baseline.
+
+story: e04s05
+risk_tier: P1
+verify_suite: "npm test"
+
+checkpoints:
+  - id: chk-01
+    intent: "skill-lint validates prove-movement skills reference verification-report template"
+    verify_cmd: "npm test -- -t 'prove skills reference verification-report'"
+    status: FAILING
+  - id: chk-02
+    intent: "verify-work SKILL.md passes full skill-lint"
+    verify_cmd: "npm run skill-lint -- verify-work"
+    status: FAILING
+  - id: chk-03
+    intent: "verify-work documents P0-P3 verification depth table"
+    verify_cmd: "npm test -- -t 'verify-work tier table'"
+    status: FAILING
+  - id: chk-04
+    intent: "verify-work documents loop-back to develop-tdd on checkpoint failure"
+    verify_cmd: "npm test -- -t 'verify-work loop-back'"
+    status: FAILING
+  - id: chk-05
+    intent: "all five seed skills pass skill-lint (epic acceptance gate)"
+    verify_cmd: "npm run skill-lint -- --seed-skills"
+    status: FAILING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING
+  - type: Quality
+    blocks_until: "all checkpoints PASSING + lint clean + fresh-subagent review"
+    state: PENDING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING

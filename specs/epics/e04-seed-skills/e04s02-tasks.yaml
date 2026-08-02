@@ -1,0 +1,41 @@
+---
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "skill:plan-work"
+generated_at: 2026-07-06T13:26:00Z
+---
+# Execution Ledger for: elaborate-spec (specify) (e04s02)
+# Risk tier: P2. Depends on e04s01 skill-lint baseline.
+
+story: e04s02
+risk_tier: P2
+verify_suite: "npm test"
+
+checkpoints:
+  - id: chk-01
+    intent: "skill-lint validates specify-movement skills reference OKF story contract"
+    verify_cmd: "npm test -- -t 'specify skills reference story contract'"
+    status: FAILING
+  - id: chk-02
+    intent: "elaborate-spec SKILL.md passes full skill-lint"
+    verify_cmd: "npm run skill-lint -- elaborate-spec"
+    status: FAILING
+  - id: chk-03
+    intent: "elaborate-spec forbids code and BCP pre-partitioning in body"
+    verify_cmd: "npm test -- -t 'elaborate-spec constraints'"
+    status: FAILING
+  - id: chk-04
+    intent: "elaborate-spec process includes validate-okf step"
+    verify_cmd: "npm test -- -t 'elaborate-spec validate step'"
+    status: FAILING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING
+  - type: Quality
+    blocks_until: "all checkpoints PASSING + lint clean"
+    state: PENDING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING

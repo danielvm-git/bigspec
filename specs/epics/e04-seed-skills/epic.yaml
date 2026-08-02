@@ -12,7 +12,7 @@ total_bcps: 9
 calibration_id: bcp-plus-v1
 risk_tier: P1
 depends_on: [e03]
-status: todo
+status: planning
 goal: >
   The five hand-written bootstrap skills that make the fractal loop runnable
   end-to-end by hand. Each authored in native Agent Skill format with
@@ -24,33 +24,43 @@ stories:
     bcps: 1
     risk_tier: P2
     status: todo
-    elaborated: false
+    elaborated: true
+    spec: e04s01-survey-context.md
+    tasks: e04s01-tasks.yaml
     acceptance: "reads cockpit state, detects current movement, writes handoff.next_skill."
   - id: e04s02
     title: elaborate-spec (specify)
     bcps: 2
     risk_tier: P2
     status: todo
-    elaborated: false
+    elaborated: true
+    spec: e04s02-elaborate-spec.md
+    tasks: e04s02-tasks.yaml
     acceptance: "emits a valid okf_kind:story bundle (okf-spine §3) from intent."
   - id: e04s03
     title: plan-work (plan)
     bcps: 2
     risk_tier: P2
     status: todo
-    elaborated: false
+    elaborated: true
+    spec: e04s03-plan-work.md
+    tasks: e04s03-tasks.yaml
     acceptance: "emits a valid okf_kind:tasks ledger with FAILING checkpoints + a P0-P3 tier."
   - id: e04s04
     title: develop-tdd (build)
     bcps: 2
     risk_tier: P1
     status: todo
-    elaborated: false
+    elaborated: true
+    spec: e04s04-develop-tdd.md
+    tasks: e04s04-tasks.yaml
     acceptance: "drives a checkpoint FAILING -> PASSING via RED-GREEN-REFACTOR."
   - id: e04s05
     title: verify-work (prove)
     bcps: 2
     risk_tier: P1
     status: todo
-    elaborated: false
+    elaborated: true
+    spec: e04s05-verify-work.md
+    tasks: e04s05-tasks.yaml
     acceptance: "emits a verification-report / gate pass scoped to the story's risk tier."

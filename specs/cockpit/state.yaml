@@ -2,25 +2,26 @@
 okf_kind: cockpit-state
 okf_version: "1.0"
 generated_by: "human"
-generated_at: 2026-07-05T20:45:00Z
+generated_at: 2026-07-06T13:26:00Z
 ---
 active_flow: build_epic
-active_epic: "specs/epics/e03-kernel/"
-active_story: ""
-current_movement: "SUSTAIN"
+active_epic: "specs/epics/e04-seed-skills/"
+active_story: "specs/epics/e04-seed-skills/e04s01-survey-context.md"
+current_movement: "BUILD"
 epic_cycle:
-  completed: true
+  completed: false
 handoff:
-  next_skill: "none"
-  reason: "e03 (Kernel Foundation) fully complete: all 3 stories built, verified, audited, and merged. Next step: start e04-seed-skills (next M0 epic, depends on e03 kernel) or frame the showcase epic (e06) at M4."
-  last_step_completed: "e03s02 merged to main (4d262c8) — kind-aware validation with 51 tests; branch deleted"
+  next_skill: "develop-tdd"
+  reason: "e04 planning complete: 5 story bundles + tasks ledgers with FAILING checkpoints. Branch e04-seed-skills ready; start e04s01 (skill-lint + survey-context hardening)."
+  last_step_completed: "plan-work — all e04 stories elaborated and task ledgers written"
   open_decisions:
-    - "e04-seed-skills is next in M0 queue (depends on e03)"
-    - "1.0.0 showcase epic (e06) to be FRAMED at M4 per architecture §8"
-    - "NPM_TOKEN secret not set; @semantic-release/npm removed from .releaserc"
-    - "e03s02 (validate-okf) completed — legacy epic capsules (e01/e02 old structs) still generate 16 kind warnings"
+    - "e04s01 introduces kernel skill-lint; subsequent stories extend it"
+    - "release-plan.yaml still lists legacy wiki/distribution epics — reconcile at M3"
+    - "using-bigspec in docs/M0.md but not in e04 epic scope — defer or add as e04s00"
   context_pointers:
     - "constitution.md"
-    - "specs/release-plan.yaml"
-    - "specs/execution-status.yaml"
-    - "specs/verifications/"
+    - "docs/okf-spine.md"
+    - "specs/epics/e04-seed-skills/epic.yaml"
+    - "specs/epics/e04-seed-skills/e04s01-survey-context.md"
+    - "specs/epics/e04-seed-skills/e04s01-tasks.yaml"
+    - "specs/research/bigpowers-full-repo-audit.md"

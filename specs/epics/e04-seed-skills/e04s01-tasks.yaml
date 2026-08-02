@@ -1,0 +1,45 @@
+---
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "skill:plan-work"
+generated_at: 2026-07-06T13:26:00Z
+---
+# Execution Ledger for: survey-context (frame) (e04s01)
+# Risk tier: P2 (full-light prove lane). Checkpoints start FAILING; drive via develop-tdd.
+
+story: e04s01
+risk_tier: P2
+verify_suite: "npm test"
+
+checkpoints:
+  - id: chk-01
+    intent: "skill-lint module exists and exports validateSkill(name)"
+    verify_cmd: "npm test -- -t 'skill-lint exports validateSkill'"
+    status: FAILING
+  - id: chk-02
+    intent: "skill-lint rejects tautological verify (test -f SKILL.md)"
+    verify_cmd: "npm test -- -t 'rejects tautological verify'"
+    status: FAILING
+  - id: chk-03
+    intent: "skill-lint enforces movement/directory alignment"
+    verify_cmd: "npm test -- -t 'movement matches directory'"
+    status: FAILING
+  - id: chk-04
+    intent: "survey-context SKILL.md passes full skill-lint"
+    verify_cmd: "npm run skill-lint -- survey-context"
+    status: FAILING
+  - id: chk-05
+    intent: "survey-context documents bp-yaml handoff writes and M0 provisional banner"
+    verify_cmd: "npm test -- -t 'survey-context handoff and provisional'"
+    status: FAILING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING
+  - type: Quality
+    blocks_until: "all checkpoints PASSING + lint clean"
+    state: PENDING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING
