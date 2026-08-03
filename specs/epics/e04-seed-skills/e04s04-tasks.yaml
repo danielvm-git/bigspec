@@ -1,0 +1,45 @@
+---
+okf_kind: tasks
+okf_version: "1.0"
+generated_by: "skill:plan-work"
+generated_at: 2026-07-06T13:26:00Z
+---
+# Execution Ledger for: develop-tdd (build) (e04s04)
+# Risk tier: P1 (full prove lane). Depends on e04s01 skill-lint baseline.
+
+story: e04s04
+risk_tier: P1
+verify_suite: "npm test"
+
+checkpoints:
+  - id: chk-01
+    intent: "skill-lint validates build-movement skills document kickoff-branch hard gate"
+    verify_cmd: "npm test -- -t 'build skills document main gate'"
+    status: FAILING
+  - id: chk-02
+    intent: "develop-tdd SKILL.md passes full skill-lint"
+    verify_cmd: "npm run skill-lint -- develop-tdd"
+    status: FAILING
+  - id: chk-03
+    intent: "develop-tdd documents vertical slice RED-GREEN-COMMIT-ledger workflow"
+    verify_cmd: "npm test -- -t 'develop-tdd vertical slice'"
+    status: FAILING
+  - id: chk-04
+    intent: "develop-tdd includes red flags table with too-simple-to-test anti-pattern"
+    verify_cmd: "npm test -- -t 'develop-tdd red flags'"
+    status: FAILING
+  - id: chk-05
+    intent: "develop-tdd forbids code without tasks ledger"
+    verify_cmd: "npm test -- -t 'develop-tdd tasks ledger gate'"
+    status: FAILING
+
+gates:
+  - type: Risk
+    blocks_until: "risk_tier assigned"
+    state: PASSING
+  - type: Quality
+    blocks_until: "all checkpoints PASSING + lint clean + fresh-subagent review"
+    state: PENDING
+  - type: Completeness
+    blocks_until: "gap-critic finds no BLOCKER"
+    state: PENDING

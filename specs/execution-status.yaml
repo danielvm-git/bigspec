@@ -2,16 +2,15 @@
 okf_kind: execution-status
 okf_version: "1.0"
 generated_by: "human"
-generated_at: "2026-07-04T00:00:00Z"
+generated_at: 2026-07-06T13:26:00Z
 ---
 # Execution order is dependency-layered by milestone (see release-plan.yaml).
-# M0: e03, e04, e02s00 (wiki bootstrap, ADR-0006) · M1: e05 · M3: e01, e02s01-03
-e02s00: todo
-e03: building
+# M0: e03-kernel, e04-seed-skills · M1: e05-eval-harness · M3: e01, e02, e04-dual-distribution
+e03: built
 e03s01: done
 e03s02: done
 e03s03: done
-e04: todo
+e04: planning
 e04s01: todo
 e04s02: todo
 e04s03: todo
@@ -20,6 +19,7 @@ e04s05: todo
 e05: todo
 e05s01: todo
 e05s02: todo
+e02s00: todo
 e01: todo
 e01s01: todo
 e01s02: todo
