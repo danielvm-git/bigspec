@@ -1,0 +1,63 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Test Build Release"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: deploy-github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download pages-site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pages-site
+          path: site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Verify pages-site artifact
+        run: |
+          if [ ! -d site ] || [ -z "$(find site -type f | head -1)" ]; then
+            echo "pages-site artifact missing or empty"
+            exit 1
+          fi
+          echo "pages-site artifact verified"
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify deployment health
+        run: |
+          echo "Verifying deployment status..."
+          if [ "${{ steps.deployment.outcome }}" = "failure" ]; then
+            echo "Deploy failed"
+            exit 1
+          fi
+          echo "Deployment succeeded"
+
