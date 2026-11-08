@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/danielvm-git/bigspec/compare/v1.1.0...v1.2.0) (2026-11-08)
+
+
+### Bug Fixes
+
+* **ci:** add concurrency, explicit gate dependencies, and caching ([92f8b04](https://github.com/danielvm-git/bigspec/commit/92f8b04e9ad7e8843714ad6d148905bbab06ae88))
+
+
+### Features
+
+* **ci:** migrate to v3 test-build-release and deploy workflow pair ([c437c8b](https://github.com/danielvm-git/bigspec/commit/c437c8bd0cd9d907e35f2ae5ebb24eda4f08f9cc))
+
 # [1.1.0](https://github.com/danielvm-git/bigspec/compare/v1.0.1...v1.1.0) (2026-07-06)
 
 
