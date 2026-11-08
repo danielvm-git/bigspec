@@ -1,4 +1,4 @@
-name: CI — Test, Lint, Build, Validate
+name: Test Build Release
 
 on:
   push:
@@ -72,6 +72,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build kernel
+        run: npm run build
+
       - name: Test
         run: npm test
 
@@ -106,3 +109,62 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Write deploy metadata
+        run: |
+          echo "{\"sha\": \"${{ github.sha }}\", \"ref\": \"${{ github.ref_name }}\"}" > deploy-meta.json
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-site
+          path: site/
+          retention-days: 3
+
+      - name: Upload deploy metadata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-meta
+          path: deploy-meta.json
+          retention-days: 3
+
+  release:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Cache npm dependencies (actions/cache)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+
